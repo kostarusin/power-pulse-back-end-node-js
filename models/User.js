@@ -26,18 +26,7 @@ const UserSchema = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
-    avatarURL: {
-      type: String,
-      required: true,
-    },
     token: {
-      type: String,
-    },
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-    verificationCode: {
       type: String,
     },
   },

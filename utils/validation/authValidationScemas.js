@@ -16,7 +16,3 @@ export const userSigninSchema = Joi.object({
 export const userSubscriptionUpdateSchema = Joi.object({
   subscription: Joi.string().required(),
 });
-
-export const userEmailSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
-});
