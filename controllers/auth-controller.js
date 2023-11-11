@@ -10,7 +10,7 @@ import { ctrlWrapper } from "../decorators/index.js";
 const { JWT_SECRET } = process.env;
 
 const signup = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     throw HttpError(409, `email ${email} already in use`);
@@ -29,7 +29,7 @@ const signup = async (req, res) => {
 
   res.status(201).json({
     token: userInfo.token,
-    user: { email: userInfo.email },
+    user: { email: userInfo.email, username },
     message: "You have successfully signed up",
   });
 };
