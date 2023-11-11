@@ -93,30 +93,10 @@ const signout = async (req, res) => {
     message: "Signout success",
   });
 };
-const updateBasicInfo = async (req, res) => {
-  const { _id } = req.user;
-  const { path: temporaryName, originalname } = req.file;
-  const storeDir = path.join(process.cwd(), "public", "avatars");
-  const fileName = `${Date.now()}_${originalname}`;
-  const avatarURL = path.join(storeDir, fileName);
-  const image = await jimp.read(temporaryName);
-  await image.resize(250, 250);
-  await image.writeAsync(temporaryName);
 
-  try {
-    await fs.rename(temporaryName, avatarURL);
-  } catch (err) {
-    await fs.unlink(temporaryName);
-    return next(err);
-  }
-
-  await User.findByIdAndUpdate(_id, { avatarURL });
-
-  res.status(200).json({ avatarURL });
-};
-
-const enterDetails = async (req, res) => {
+const updateUserInfo = async (req, res, next) => {
   const {
+    username,
     height,
     currentWeight,
     desiredWeight,
@@ -125,9 +105,32 @@ const enterDetails = async (req, res) => {
     sex,
     levelActivity,
   } = req.body;
+
   const { _id } = req.user;
 
-  await User.findByIdAndUpdate(_id, {
+  let avatarURL = null;
+
+  if (req.file) {
+    const { path: temporaryName, originalname } = req.file;
+    const storeDir = path.join(process.cwd(), "public", "avatars");
+    const fileName = `${Date.now()}_${originalname}`;
+    avatarURL = path.join(storeDir, fileName);
+
+    const image = await jimp.read(temporaryName);
+    image.resize(250, 250);
+
+    await image.writeAsync(avatarURL);
+
+    try {
+      await fs.rename(temporaryName, avatarURL);
+    } catch (err) {
+      await fs.unlink(temporaryName);
+      return next(err);
+    }
+  }
+
+  const updatedUserData = {
+    username,
     height,
     currentWeight,
     desiredWeight,
@@ -135,7 +138,32 @@ const enterDetails = async (req, res) => {
     blood,
     sex,
     levelActivity,
-  });
+  };
+  if (avatarURL) {
+    updatedUserData.avatarURL = avatarURL;
+  }
+
+  await User.findByIdAndUpdate(_id, updatedUserData);
+
+  const responsePayload = {
+    username,
+    height,
+    currentWeight,
+    desiredWeight,
+    birthday,
+    blood,
+    sex,
+    levelActivity,
+  };
+  if (avatarURL) {
+    responsePayload.avatarURL = avatarURL;
+  }
+
+  res.status(200).json(responsePayload);
+};
+
+const calculateCalories = async (req, res) => {
+  const { height, currentWeight, birthday, sex, levelActivity } = req.user;
 
   const isMale = sex.toLowerCase() === "male";
   const activityCoefficient = {
@@ -166,6 +194,6 @@ export default {
   signin: ctrlWrapper(signin),
   getCurrent: ctrlWrapper(getCurrent),
   signout: ctrlWrapper(signout),
-  enterDetails: ctrlWrapper(enterDetails),
-  updateBasicInfo: ctrlWrapper(updateBasicInfo),
+  updateUserInfo: ctrlWrapper(updateUserInfo),
+  calculateCalories: ctrlWrapper(calculateCalories),
 };

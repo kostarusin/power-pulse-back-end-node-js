@@ -8,33 +8,31 @@ import { authenticate, upload } from "../../middlewares/index.js";
 import {
   userSignupSchema,
   userSigninSchema,
-  userDetailsSchema,
+  userInfoSchema,
+  userCaloriesSchema,
 } from "../../utils/validation/authValidationScemas.js";
 
 const userSignupValidate = validateBody(userSignupSchema);
 const userSigninValidate = validateBody(userSigninSchema);
-const userDetailsValidate = validateBody(userDetailsSchema);
+const userInfoValidate = validateBody(userInfoSchema);
+const userCaloriesValidate = validateBody(userCaloriesSchema);
 
 const authRouter = express.Router();
 
 authRouter.post("/signup", userSignupValidate, authController.signup);
 
-authRouter.post(
-  "/enterdetails",
-  authenticate,
-  userDetailsValidate,
-  authController.enterDetails
-);
+authRouter.post("/calories", authenticate, authController.calculateCalories);
 
 authRouter.post("/signin", userSigninValidate, authController.signin);
 
 authRouter.get("/current", authenticate, authController.getCurrent);
 
 authRouter.patch(
-  "/basicinfo",
+  "/updatedetails",
   authenticate,
   upload.single("avatar"),
-  authController.updateBasicInfo
+  userInfoValidate,
+  authController.updateUserInfo
 );
 
 authRouter.post("/logout", authenticate, authController.signout);
