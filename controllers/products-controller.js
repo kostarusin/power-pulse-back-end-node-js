@@ -1,12 +1,12 @@
-import Product from "../models/Products.js";
+import Product from "../models/Product.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
-const getAllProducts = async (req, res) => {
-  const productsList = await Product.find({}, "category").exec();
+const getAllProductsCategories = async (req, res) => {
+  const productsCategories = await Product.find({}, "category").exec();
 
-  res.json(productsList);
+  res.json(productsCategories);
 };
 
 export default {
-  getAllProducts: ctrlWrapper(getAllProducts),
+  getAllProductsCategories: ctrlWrapper(getAllProductsCategories),
 };
