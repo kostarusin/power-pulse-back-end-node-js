@@ -3,33 +3,45 @@ import authController from "../../controllers/auth-controller.js";
 
 import { validateBody } from "../../decorators/index.js";
 
-import { authenticate } from "../../middlewares/index.js";
+import { authenticate, upload } from "../../middlewares/index.js";
 
 import {
   userSignupSchema,
   userSigninSchema,
-  userSubscriptionUpdateSchema,
+  userDetailsSchema,
+  userBasicInfoSchema,
 } from "../../utils/validation/authValidationScemas.js";
 
 const userSignupValidate = validateBody(userSignupSchema);
 const userSigninValidate = validateBody(userSigninSchema);
-const userSubscriptionValidate = validateBody(userSubscriptionUpdateSchema);
+const userDetailsValidate = validateBody(userDetailsSchema);
+const userBasicInfoValidate = validateBody(userBasicInfoSchema);
 
 const authRouter = express.Router();
 
 authRouter.post("/signup", userSignupValidate, authController.signup);
 
+authRouter.post(
+  "/enterdetails",
+  authenticate,
+  userDetailsValidate,
+  authController.enterDetails
+);
+
 authRouter.post("/signin", userSigninValidate, authController.signin);
 
 authRouter.get("/current", authenticate, authController.getCurrent);
 
-authRouter.post("/signout", authenticate, authController.signout);
-
 authRouter.patch(
-  "/users",
-  userSubscriptionValidate,
+  "/basicinfo",
+
   authenticate,
-  authController.subscriptionUpdate
+  upload.single("avatar"),
+
+  userBasicInfoValidate,
+  authController.updateBasicInfo
 );
+
+authRouter.post("/logout", authenticate, authController.signout);
 
 export default authRouter;
