@@ -53,11 +53,15 @@ const UserSchema = new Schema(
     sex: {
       type: String,
       enum: ["male", "female"],
-      default: undefined,
+      default: null,
     },
     levelActivity: {
       type: Number,
       enum: [1, 2, 3, 4, 5],
+      default: null,
+    },
+    bmr: {
+      type: Number,
       default: null,
     },
   },
