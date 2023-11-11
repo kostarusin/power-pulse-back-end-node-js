@@ -1,7 +1,7 @@
-// import { Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
-// const exercisesSchema = new Schema();
+const exerciseSchema = new Schema();
 
-// const Exercise = model("exercise", exercisesSchema);
+const Exercise = model("exercise", exerciseSchema);
 
-// export default Exercise;
+export default Exercise;

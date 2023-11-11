@@ -5,7 +5,7 @@ import "dotenv/config";
 
 import authRouter from "./routes/api/auth-router.js";
 import productRouter from "./routes/api/products-router.js";
-// import exerciseRouter from "./routes/api/exercises-router.js";
+import exerciseRouter from "./routes/api/exercises-router.js";
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
-// app.use("/api/exercises", exerciseRouter);
+app.use("/api/exercises", exerciseRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
