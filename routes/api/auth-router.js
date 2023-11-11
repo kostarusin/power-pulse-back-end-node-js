@@ -9,13 +9,11 @@ import {
   userSignupSchema,
   userSigninSchema,
   userDetailsSchema,
-  userBasicInfoSchema,
 } from "../../utils/validation/authValidationScemas.js";
 
 const userSignupValidate = validateBody(userSignupSchema);
 const userSigninValidate = validateBody(userSigninSchema);
 const userDetailsValidate = validateBody(userDetailsSchema);
-const userBasicInfoValidate = validateBody(userBasicInfoSchema);
 
 const authRouter = express.Router();
 
@@ -34,11 +32,8 @@ authRouter.get("/current", authenticate, authController.getCurrent);
 
 authRouter.patch(
   "/basicinfo",
-
   authenticate,
   upload.single("avatar"),
-
-  userBasicInfoValidate,
   authController.updateBasicInfo
 );
 
