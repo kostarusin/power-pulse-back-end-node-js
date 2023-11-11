@@ -1,8 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
+import path from "path";
 import User from "../models/User.js";
-
+import jimp from "jimp";
+import fs from "fs/promises";
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
@@ -94,13 +95,12 @@ const signout = async (req, res) => {
 };
 const updateBasicInfo = async (req, res) => {
   const { _id } = req.user;
-  const { username } = req.body;
   const { path: temporaryName, originalname } = req.file;
   const storeDir = path.join(process.cwd(), "public", "avatars");
   const fileName = `${Date.now()}_${originalname}`;
   const avatarURL = path.join(storeDir, fileName);
   const image = await jimp.read(temporaryName);
-  await image.resize(150, 150);
+  await image.resize(250, 250);
   await image.writeAsync(temporaryName);
 
   try {
@@ -110,9 +110,9 @@ const updateBasicInfo = async (req, res) => {
     return next(err);
   }
 
-  await User.findByIdAndUpdate(_id, { username, avatarURL });
+  await User.findByIdAndUpdate(_id, { avatarURL });
 
-  res.status(200).json({ username, avatarURL });
+  res.status(200).json({ avatarURL });
 };
 
 const enterDetails = async (req, res) => {
