@@ -6,6 +6,6 @@ const productRouter = express.Router();
 
 productRouter.use(authenticate);
 
-productRouter.get("/category", productsController.getAllProducts);
+productRouter.get("/", productsController.getAllProductsCategories);
 
 export default productRouter;
