@@ -4,6 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 
 import authRouter from "./routes/api/auth-router.js";
+import productRouter from "./routes/api/products-router.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
