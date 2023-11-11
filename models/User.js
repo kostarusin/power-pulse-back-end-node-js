@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 import { handleSaveError, runValidatorsAtUpdate } from "./hooks.js";
 
-const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const emailRegexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
 const UserSchema = new Schema(
   {
@@ -21,13 +21,44 @@ const UserSchema = new Schema(
       minlength: 6,
       required: true,
     },
-    subscription: {
-      type: String,
-      enum: ["starter", "pro", "business"],
-      default: "starter",
-    },
+    avatarURL: String,
     token: {
       type: String,
+    },
+    height: {
+      type: Number,
+      default: null,
+      min: 150,
+    },
+    currentWeight: {
+      type: Number,
+      min: 35,
+      default: null,
+    },
+    desiredWeight: {
+      type: Number,
+      min: 35,
+      default: null,
+    },
+    birthday: {
+      type: Date,
+      min: 18,
+      default: null,
+    },
+    blood: {
+      type: Number,
+      enum: [1, 2, 3, 4],
+      default: null,
+    },
+    sex: {
+      type: String,
+      enum: ["male", "female"],
+      default: undefined,
+    },
+    levelActivity: {
+      type: Number,
+      enum: [1, 2, 3, 4, 5],
+      default: null,
     },
   },
   { versionKey: false, timestamps: true }
