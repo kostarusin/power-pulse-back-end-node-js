@@ -27,42 +27,34 @@ const UserSchema = new Schema(
     },
     height: {
       type: Number,
-      default: null,
       min: 150,
     },
     currentWeight: {
       type: Number,
       min: 35,
-      default: null,
     },
     desiredWeight: {
       type: Number,
       min: 35,
-      default: null,
     },
     birthday: {
       type: Date,
       min: 18,
-      default: null,
     },
     blood: {
       type: Number,
       enum: [1, 2, 3, 4],
-      default: null,
     },
     sex: {
       type: String,
       enum: ["male", "female"],
-      default: null,
     },
     levelActivity: {
       type: Number,
       enum: [1, 2, 3, 4, 5],
-      default: null,
     },
     bmr: {
       type: Number,
-      default: null,
     },
   },
   { versionKey: false, timestamps: true }

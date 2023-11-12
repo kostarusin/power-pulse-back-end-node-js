@@ -163,7 +163,18 @@ const updateUserInfo = async (req, res, next) => {
 };
 
 const calculateCalories = async (req, res) => {
+  if (!req.user) {
+    return res
+      .status(400)
+      .json({ error: "User data is missing in the request." });
+  }
   const { height, currentWeight, birthday, sex, levelActivity } = req.user;
+
+  if (!height || !currentWeight || !birthday || !sex || !levelActivity) {
+    return res
+      .status(400)
+      .json({ error: "One or more required user properties are missing." });
+  }
 
   const isMale = sex.toLowerCase() === "male";
   const activityCoefficient = {
