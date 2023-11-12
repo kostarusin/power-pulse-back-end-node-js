@@ -2,19 +2,23 @@ import Product from "../models/Product.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
 const getAllProductsCategories = async (req, res) => {
-  const productsCategories = await Product.find({}, "category").exec();
+  const productsCategories = await Product.distinct("category").exec();
 
-  res.json(productsCategories);
+  res.status(200).json(productsCategories);
 };
 
 const getAllProductsGroupBloodNotAllowed = async (req, res) => {
   const { blood } = req.user;
-  const productsCategories = await Product.find({}, "groupBloodNotAllowed");
+  const productsCategories = await Product.find({});
+  const productsAllowed = [];
 
-  const formatProduct = productsCategories.filter(
-    (product) => product.groupBloodNotAllowed[blood]
-  );
-  res.json({ products: formatProduct, blood });
+  productsCategories.forEach((item) => {
+    if (item.groupBloodNotAllowed[blood]) {
+      productsAllowed.push({ item, allowed: true });
+    } else productsAllowed.push({ item, allowed: false });
+  });
+
+  res.status(200).json({ products: productsAllowed });
 };
 
 export default {
