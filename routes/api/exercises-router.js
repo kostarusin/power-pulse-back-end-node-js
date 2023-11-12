@@ -7,5 +7,6 @@ const exerciseRouter = express.Router();
 exerciseRouter.use(authenticate);
 
 exerciseRouter.get("/", exercisesController.getAllExercises);
+exerciseRouter.get("/type/", exercisesController.getAllExercisesTypes);
 
 export default exerciseRouter;
