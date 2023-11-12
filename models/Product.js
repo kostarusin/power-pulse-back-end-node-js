@@ -37,7 +37,7 @@ const productSchema = new Schema(
       },
     },
   },
-  { versionKey: false, timestamps: false }
+  { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } }
 );
 
 const Product = model("product", productSchema);
