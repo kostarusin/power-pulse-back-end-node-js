@@ -7,5 +7,9 @@ const productRouter = express.Router();
 productRouter.use(authenticate);
 
 productRouter.get("/", productsController.getAllProductsCategories);
+productRouter.get(
+  "/groupBloodNotAllowed/",
+  productsController.getAllProductsGroupBloodNotAllowed
+);
 
 export default productRouter;
