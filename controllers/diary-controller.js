@@ -9,65 +9,70 @@ const addDiary = async (req, res) => {
 
   const conditions = { owner, date };
   const update = {};
+  let burnedCalories = 0;
+  let consumedCalories = 0;
 
   if (doneExercises && doneExercises.length > 0) {
     update.$addToSet = { doneExercises: { $each: doneExercises } };
+    burnedCalories = doneExercises.reduce((total, exercise) => total + exercise.calories, 0);
   }
 
   if (consumedProducts && consumedProducts.length > 0) {
     update.$addToSet = { consumedProducts: { $each: consumedProducts } };
+    consumedCalories = consumedProducts.reduce((total, product) => total + product.calories, 0);
   }
+
+  update.$inc = { burnedCalories, consumedCalories };
 
   const options = { new: true, upsert: true };
   const result = await Diary.findOneAndUpdate(conditions, update, options);
 
-  res.status(201)
-  .json(result);
+  res.status(201).json(result);
 };
 
 const updateDiary = async (req, res) => {
-    const { id } = req.params;
-    const { _id: owner } = req.user;
-    const { date } = req.body;
-    const diary = await Diary.findOne({ owner, date });
-  
-    if (!diary) {
-      throw HttpError(404, "Diary not found");
+  const { id } = req.params;
+  const { _id: owner } = req.user;
+  const { date } = req.body;
+  const diary = await Diary.findOne({ owner, date });
+
+  if (!diary) {
+    throw HttpError(404, "Diary not found");
+  }
+
+  let arrayType;
+  let update;
+
+  if (diary.doneExercises) {
+    const doneExerciseIndex = diary.doneExercises.findIndex(
+      (item) => item._id && item._id.toString() === id
+    );
+
+    if (doneExerciseIndex !== -1) {
+      arrayType = "doneExercises";
+      update = { $pull: { doneExercises: { _id: id } }, $inc: { burnedCalories: -diary.doneExercises[doneExerciseIndex].calories } };
     }
-  
-    let arrayType;
-    let update;
-  
-    if (diary.doneExercises) {
-      const doneExerciseIndex = diary.doneExercises.findIndex(
-        (item) => item._id && item._id.toString() === id
-      );
-  
-      if (doneExerciseIndex !== -1) {
-        arrayType = "doneExercises";
-        update = { $pull: { doneExercises: { _id: id } } };
-      }
+  }
+
+  if (!arrayType && diary.consumedProducts) {
+    const consumedProductIndex = diary.consumedProducts.findIndex(
+      (item) => item._id && item._id.toString() === id
+    );
+
+    if (consumedProductIndex !== -1) {
+      arrayType = "consumedProducts";
+      update = { $pull: { consumedProducts: { _id: id } }, $inc: { consumedCalories: -diary.consumedProducts[consumedProductIndex].calories } };
     }
-  
-    if (!arrayType && diary.consumedProducts) {
-      const consumedProductIndex = diary.consumedProducts.findIndex(
-        (item) => item._id && item._id.toString() === id
-      );
-  
-      if (consumedProductIndex !== -1) {
-        arrayType = "consumedProducts";
-        update = { $pull: { consumedProducts: { _id: id } } };
-      }
-    }
-  
-    if (!arrayType) {
-      throw HttpError(404, "Item not found in diary");
-    }
-  
-    const result = await Diary.findOneAndUpdate({ owner, date }, update, { new: true });
-  
-    res.status(204).end();
-  };
+  }
+
+  if (!arrayType) {
+    throw HttpError(404, "Item not found in diary");
+  }
+
+  const result = await Diary.findOneAndUpdate({ owner, date }, update, { new: true });
+
+  res.status(204).end();
+};
 
   const getDiary = async (req, res) => {
     const { _id: owner, createdAt } = req.user;

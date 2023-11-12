@@ -79,6 +79,16 @@ const DiarySchema = new Schema(
           "At least one of fields should be filled: doneExercises or consumedProducts",
       },
     },
+    burnedCalories: {
+      type: Number,
+      min: 0,
+      required: true,
+    },
+    consumedCalories: {
+      type: Number,
+      min: 0,
+      required: true,
+    }
   },
   { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 }  }
 );
@@ -115,7 +125,8 @@ export const diaryAddSchema = Joi.object({
         "any.required": `missing required calories field`,
       }),
   }),
-
+  burnedCalories: Joi.number().min(0),
+  consumedCalories: Joi.number().min(0),
 }).xor('doneExercises', 'consumedProducts');
 
 export const Diary = model("diary", DiarySchema);
