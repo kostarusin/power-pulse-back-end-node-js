@@ -1,0 +1,229 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "description": "Render API",
+      "url": "https://power-pulse-fx29.onrender.com"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "API description for powerpulse project",
+    "description": "Routes for api powerpulse"
+  },
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "summary": "User registration",
+        "tags": ["Auth Controllers"],
+        "description": "This operation provides the user with the ability to register on our website",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSignUp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "You have successfully signed up"
+          },
+          "409": {
+            "description": "Email already in use"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/auth/signin": {
+      "post": {
+        "summary": "User login",
+        "tags": ["Auth Controllers"],
+        "description": "This operation provides the user with the ability to log into their account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSignIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "You have successfully logged in"
+          },
+          "401": {
+            "description": "Email or password is wrong"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Logout user",
+        "tags": ["Auth Controllers"],
+        "description": "This operation provides the user with the ability to log out from their account",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User successfully logged out"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/auth/current": {
+      "get": {
+        "summary": "get information about the current user",
+        "tags": ["User Controllers"],
+        "description": "This operation provides the user with the ability to check the current user's information",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information found"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/auth/calories": {
+      "post": {
+        "summary": "count user calories by their information",
+        "tags": ["User Controllers"],
+        "description": "This operation provides the user with the ability to count their calories for everyday consume",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Calories created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserCalories"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Basic info is required"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserSignUp": {
+        "type": "object",
+        "required": ["username", "email", "password"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "Name1235"
+          },
+          "email": {
+            "type": "string",
+            "example": "example@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "pass1234",
+            "minLength": 6
+          }
+        }
+      },
+      "UserSignIn": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "example@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "pass1234"
+          }
+        }
+      },
+      "UserCalories": {
+        "type": "object",
+        "required": ["height", "currentWeight", "birthday", "sex", "levelActivity"],
+        "properties": {
+          "height": {
+            "type": "number",
+            "example": 190,
+            "minimum": 150
+          },
+          "currentWeight": {
+            "type": "number",
+            "example": 89,
+            "minimum": 35
+          },
+          "birthday": {
+            "type": "number",
+            "example": 23,
+            "minimum": 18
+          },
+          "sex": {
+            "type": "string",
+            "example": "male"
+          },
+          "levelActivity": {
+            "type": "number",
+            "example": 1
+          }
+        }
+      }
+    }
+  }
+}

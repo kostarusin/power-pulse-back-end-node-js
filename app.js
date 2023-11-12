@@ -2,7 +2,9 @@ import express from "express";
 import logger from "morgan";
 import cors from "cors";
 import "dotenv/config";
+import swaggerUiExpress from "swagger-ui-express";
 
+import * as swagger from "./swagger.json" assert { type: "json" };
 import authRouter from "./routes/api/auth-router.js";
 import productRouter from "./routes/api/products-router.js";
 import diaryRouter from "./routes/api/diary-router.js";
@@ -21,6 +23,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/diary", diaryRouter);
 app.use("/api/exercises", exerciseRouter);
+app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(swagger));
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
