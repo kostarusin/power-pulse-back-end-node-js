@@ -8,14 +8,13 @@ const getAllProductsCategories = async (req, res) => {
 };
 
 const getAllProductsGroupBloodNotAllowed = async (req, res) => {
-  const { blood, email } = req.user;
+  const { blood } = req.user;
   const productsCategories = await Product.find({}, "groupBloodNotAllowed");
-  const formatProduct = productsCategories.filter(function (e) {
-    return e.groupBloodNotAllowed[blood] === true;
-  });
-  console.log(formatProduct);
 
-  res.json({ productsCategories, blood, email });
+  const formatProduct = productsCategories.filter(
+    (product) => product.groupBloodNotAllowed[blood]
+  );
+  res.json({ products: formatProduct, blood });
 };
 
 export default {

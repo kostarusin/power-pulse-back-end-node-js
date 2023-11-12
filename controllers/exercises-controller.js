@@ -6,7 +6,15 @@ const getAllExercises = async (req, res) => {
 
   res.json(exercises);
 };
+const getAllExercisesTypes = async (req, res) => {
+  const exercises = await Exercise.find(
+    {},
+    { bodyPart: 1, equipment: 1, target: 1 }
+  );
+  res.json(exercises);
+};
 
 export default {
   getAllExercises: ctrlWrapper(getAllExercises),
+  getAllExercisesTypes: ctrlWrapper(getAllExercisesTypes),
 };
