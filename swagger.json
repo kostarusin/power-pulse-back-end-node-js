@@ -8,6 +8,28 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "servers": [{ "url": "https://power-pulse-fx29.onrender.com" }],
+  "tags": [
+    {
+      "name": "Auth Controllers",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "User Controllers",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Diary Controllers",
+      "description": "Diary endpoints"
+    },
+    {
+      "name": "Products Controllers",
+      "description": "Products endpoints"
+    },
+    {
+      "name": "Exercises Controllers",
+      "description": "Exercises endpoints"
+    }
+  ],
 
   "paths": {
     "/api/auth/signup": {
@@ -156,6 +178,116 @@
           }
         }
       }
+    },
+    "/api/diary": {
+      "post": {
+        "summary": "Adds exercise or product into User's Diary",
+        "tags": ["Diary Controllers"],
+        "description": "This operation provides to add exercise or product to user's diary",
+        "requestBody": {
+          "description": "Posting info to Diary object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddingToDiary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "You have successfully added exercise or product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Gets User's Diary for specific date",
+        "tags": ["Diary Controllers"],
+        "description": "This operation provides to get diary for a specific date",
+        "requestBody": {
+          "description": "Getting Diary for a specific date object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSignUp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "You have successfully got the Diary object"
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "api/diary/:id": {
+      "patch": {
+        "summary": "Removes exercise or product from User's Diary",
+        "tags": ["Diary Controllers"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "ID of exercise or product"
+          }
+        ],
+        "description": "This operation provides to remove exercise or product from user's diary",
+        "requestBody": {
+          "description": "Updating Diary for a specific date object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserSignUp"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "You have successfully added exercise or product"
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -227,6 +359,67 @@
             "example": 1
           }
         }
+      },
+      "AddingToDiary": {
+  
+          "type": "object",
+          "oneOf": [
+            {
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "example": "11/11/2023"
+                },
+                "doneExercises": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "exercise": { "type": "string",
+                      "example": "Air bike" },
+                      "time": { "type": "integer",
+                      "example": "180" },
+                      "calories": { "type": "integer",
+                      "example": "312" }
+                    },
+                    "required": ["exercise", "time", "calories"]
+                  }
+                }
+              },
+              "required": ["date", "doneExercises"]
+            },
+            {
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "example": "11/11/2023"
+                },
+                "consumedProducts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "product": { "type": "string",
+                      "example": "Spikachki" },
+                      "amount": { "type": "integer",
+                      "example": "100" },
+                      "calories": { "type": "integer",
+                      "example": "337" }
+                    },
+                    "required": ["product", "amount", "calories"]
+                  }
+                }
+              },
+              "required": ["date", "consumedProducts"]
+            }
+          ]
+
+      },
+      "AddingResponse": {
+        "type": "object",
+        "properties": {}
       }
     }
   }

@@ -6,7 +6,6 @@ import swaggerUiExpress from "swagger-ui-express";
 import * as fs from 'fs';
 const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf8'));
 
-import * as swagger from "./swagger.json" assert { type: "json" };
 import authRouter from "./routes/api/auth-router.js";
 import productRouter from "./routes/api/products-router.js";
 import diaryRouter from "./routes/api/diary-router.js";
