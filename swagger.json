@@ -1,16 +1,14 @@
 {
-  "openapi": "3.0.0",
-  "servers": [
-    {
-      "description": "Render API",
-      "url": "https://power-pulse-fx29.onrender.com"
-    }
-  ],
+  "openapi": "3.0.1",
   "info": {
     "version": "1.0.0",
     "title": "API description for powerpulse project",
     "description": "Routes for api powerpulse"
   },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [{ "url": "https://power-pulse-fx29.onrender.com" }],
+
   "paths": {
     "/api/auth/signup": {
       "post": {
@@ -197,7 +195,13 @@
       },
       "UserCalories": {
         "type": "object",
-        "required": ["height", "currentWeight", "birthday", "sex", "levelActivity"],
+        "required": [
+          "height",
+          "currentWeight",
+          "birthday",
+          "sex",
+          "levelActivity"
+        ],
         "properties": {
           "height": {
             "type": "number",
