@@ -15,6 +15,6 @@ diaryRouter.post("/", isEmptyBody, dairyAddValidate, diaryController.addDiary);
 
 diaryRouter.patch("/:id", isEmptyBody, diaryController.updateDiary);
 
-diaryRouter.get("/", isEmptyBody, diaryController.getDiary)
+diaryRouter.post("/", isEmptyBody, diaryController.getDiary)
 
 export default diaryRouter;
