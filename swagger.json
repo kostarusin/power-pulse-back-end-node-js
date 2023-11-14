@@ -194,7 +194,7 @@
           }
         ],
         "description": "This operation provides to get diary for a specific date",
-      
+
         "requestBody": {
           "description": "Getting Diary for a specific date object",
           "required": false,
@@ -239,7 +239,7 @@
             "description": "Date in format 11-11-2023"
           }
         ],
-          "requestBody": {
+        "requestBody": {
           "description": "Posting info to Diary object",
           "required": true,
           "content": {
@@ -477,12 +477,31 @@
                 "product": { "type": "string" },
                 "amount": { "type": "integer" },
                 "calories": { "type": "integer" },
+                "title": { "type": "string" },
+                "category": { "type": "string" },
+                "groupBloodNotAllowed": {
+                  "type": "object",
+                  "properties": {
+                    "1": { "type": "boolean" },
+                    "2": { "type": "boolean" },
+                    "3": { "type": "boolean" },
+                    "4": { "type": "boolean" }
+                  }
+                },
                 "_id": { "type": "string" }
               },
               "example": {
-                "product": "6550c86543e60d02be7da247",
-                "amount": "100",
+                "product": "5d51694902b2373622ff5ec3",
+                "amount": "80",
                 "calories": "337",
+                "title": "Midori liqueur",
+                "category": "alcoholic drinks",
+                "groupBloodNotAllowed": {
+                  "1": "false",
+                  "2": "false",
+                  "3": "false",
+                  "4": "false"
+                },
                 "_id": "6550c426088f7bcbd5c2d497"
               }
             }
@@ -495,15 +514,22 @@
                 "exercise": { "type": "string" },
                 "time": { "type": "integer" },
                 "calories": { "type": "integer" },
+                "bodyPart": { "type": "string" },
+                "equipment": { "type": "string" },
+                "name": { "type": "string" },
+                "target": { "type": "string" },
                 "_id": { "type": "string" }
               },
               "example": {
                 "exercise": "6550c34234e60d02be7da247",
-                "time": "180" ,
+                "time": "180",
                 "calories": "312",
-                "_id": "6550c426088f7bcbd5c2d497" 
+                "bodyPart": "shoulders",
+                "equipment": "kettlebell",
+                "name": "kettlebell alternating press",
+                "target": "delts",
+                "_id": "6550c426088f7bcbd5c2d497"
               }
-
             }
           },
           "createdAt": {
