@@ -11,3 +11,6 @@ const exerciseSchema = new Schema({
   }, { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } });
 
 const Exercise = model("exercise", exerciseSchema);
+
+export default Exercise;
+
