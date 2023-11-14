@@ -1,7 +1,8 @@
 import { ctrlWrapper } from "../decorators/index.js";
 import HttpError from "../helpers/HttpError.js";
 import { Diary } from "../models/Diary.js";
-import User from "../models/User.js";
+import Exercise from "../models/Exercise.js";
+import Product from "../models/Product.js";
 
 const addDiary = async (req, res) => {
   const { _id: owner } = req.user;
@@ -14,20 +15,64 @@ const addDiary = async (req, res) => {
   let consumedCalories = 0;
 
   if (doneExercises && doneExercises.length > 0) {
-    update.$addToSet = { doneExercises: { $each: doneExercises } };
-    burnedCalories = doneExercises.reduce(
-      (total, exercise) => total + exercise.calories,
-      0
-    );
-  }
+    const updatedDoneExercises = [];
+    for (const exerciseObj of doneExercises) {
+      const { exercise, time, calories } = exerciseObj;
+      const foundExercise = await Exercise.findById(exercise);
+      console.log('(foundExercise)', (foundExercise))
 
-  if (consumedProducts && consumedProducts.length > 0) {
-    update.$addToSet = { consumedProducts: { $each: consumedProducts } };
-    consumedCalories = consumedProducts.reduce(
-      (total, product) => total + product.calories,
-      0
-    );
+      const newExercise = {
+        exercise, 
+        time, 
+        calories,
+        bodyPart: foundExercise.bodyPart,
+        equipment:foundExercise.equipment,
+        name: foundExercise.name,
+        target: foundExercise.target,
+      }
+   
+
+      updatedDoneExercises.push(newExercise);
+      burnedCalories += calories;
+    
   }
+  update.$addToSet = { doneExercises: { $each: updatedDoneExercises } };
+}
+
+if (consumedProducts && consumedProducts.length > 0) {
+  const updatedConsumedProducts = [];
+  for (const productObj of consumedProducts) {
+    const { product, amount, calories } = productObj;
+    const foundProduct = await Product.findById(product);
+    console.log('(foundProduct)', (foundProduct))
+
+    const newProduct = {
+      product, 
+      amount, 
+      calories,
+      title: foundProduct.title,
+      category: foundProduct.category,
+      groupBloodNotAllowed:foundProduct.groupBloodNotAllowed,
+    }
+ 
+    updatedConsumedProducts.push(newProduct);
+    consumedCalories += calories;
+  
+}
+update.$addToSet = { consumedProducts: { $each: updatedConsumedProducts } };
+}
+
+
+
+
+  // if (consumedProducts && consumedProducts.length > 0) {
+
+  //   update.$addToSet = { consumedProducts: { $each: consumedProducts } };
+  //   consumedCalories = consumedProducts.reduce(
+  //     (total, product) => total + product.calories,
+  //     0
+  //   );
+  // }
 
   update.$inc = { burnedCalories, consumedCalories };
 
