@@ -22,7 +22,7 @@ const DoneExerciseSchema = new Schema(
       required: true,
     },
   },
-  { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } }
+  { versionKey: false }
 );
 
 const ConsumeProductSchema = new Schema(
@@ -42,7 +42,7 @@ const ConsumeProductSchema = new Schema(
       required: true,
     },
   },
-  { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } }
+  { versionKey: false }
 );
 
 const DiarySchema = new Schema(
