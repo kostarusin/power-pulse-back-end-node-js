@@ -61,25 +61,12 @@ if (consumedProducts && consumedProducts.length > 0) {
 }
 update.$addToSet = { consumedProducts: { $each: updatedConsumedProducts } };
 }
-
-
-
-
-  // if (consumedProducts && consumedProducts.length > 0) {
-
-  //   update.$addToSet = { consumedProducts: { $each: consumedProducts } };
-  //   consumedCalories = consumedProducts.reduce(
-  //     (total, product) => total + product.calories,
-  //     0
-  //   );
-  // }
-
-  update.$inc = { burnedCalories, consumedCalories };
+ update.$inc = { burnedCalories, consumedCalories };
 
   const options = { new: true, upsert: true };
   const result = await Diary.findOneAndUpdate(conditions, update, options);
 
-  res.status(201).json(result);
+  res.status(200).json(result);
 };
 
 const updateDiary = async (req, res) => {
