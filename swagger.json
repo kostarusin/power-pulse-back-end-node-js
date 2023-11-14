@@ -326,9 +326,319 @@
         }
       }
     }
+    ,
+    "/api/products": {
+      "get": {
+        "summary": "Returns all existing product categories in the database",
+        "tags": ["Products Controllers"],
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "description": "Returns all existing product categories in the database",
+
+        "requestBody": {
+          "description": "Getting all existing product categories in the database",
+          "required": false,
+          "content": {}
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Productscategories"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
+    ,
+    "/api/products/groupBloodNotAllowed": {
+      "get": {
+        "summary": "Returns to the authorized user all products that are permissible for consumption by their blood type or vice versa",
+        "tags": ["Products Controllers"],
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "description": "Returns to the authorized user all products that are permissible for consumption by their blood type or vice versa",
+
+        "requestBody": {
+          "description": "Getting all products that are permissible for consumption by their blood type or vice versa",
+          "required": false,
+          "content": {}
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsgroupBloodNotAllowed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
+    ,
+    "/api/exercises": {
+      "get": {
+        "summary": "Returns all existing workouts in the database",
+        "tags": ["Exercises Controllers"],
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "description": "Returns all existing workouts in the database",
+
+        "requestBody": {
+          "description": "Getting all existing workouts in the database",
+          "required": false,
+          "content": {}
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Exercises"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
+    ,
+    "/api/exercises/type": {
+      "get": {
+        "summary": "Returns all types of body parts, muscles, and equipment existing in the database",
+        "tags": ["Exercises Controllers"],
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization token",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "description": "Returns all types of body parts, muscles, and equipment existing in the database",
+
+        "requestBody": {
+          "description": "Getting all types of body parts, muscles, and equipment existing in the database",
+          "required": false,
+          "content": {}
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExercisesType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
   },
   "components": {
     "schemas": {
+      "ExercisesType": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The unique identifier of the exercise."
+          },
+          "filter": {
+            "type": "string",
+            "description": "The body part targeted by the exercise."
+          },
+          "name": {
+            "type": "string",
+            "description": "The equipment used for the exercise."
+          },
+          "imgURL": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL of the GIF demonstrating the exercise."
+          }
+        },
+        "required": ["_id", "imgURL", "name", "filter"]
+      },
+      "Exercises": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The unique identifier of the exercise."
+          },
+          "bodyPart": {
+            "type": "string",
+            "description": "The body part targeted by the exercise."
+          },
+          "equipment": {
+            "type": "string",
+            "description": "The equipment used for the exercise."
+          },
+          "gifUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL of the GIF demonstrating the exercise."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the exercise."
+          },
+          "target": {
+            "type": "string",
+            "description": "The specific muscle group targeted by the exercise."
+          },
+          "burnedCalories": {
+            "type": "integer",
+            "description": "The estimated number of calories burned during the exercise."
+          },
+          "time": {
+            "type": "integer",
+            "description": "The duration of the exercise in minutes."
+          }
+        },
+        "required": ["_id", "bodyPart", "equipment", "gifUrl", "name", "target", "burnedCalories", "time"]
+      },
+      "Productscategories": {
+        "type": "array"
+      },
+      "ProductsgroupBloodNotAllowed": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "The unique identifier of the exercise."
+          },
+          "item":{
+            "type": "object",
+            "groupBloodNotAllowed":{
+              "1": {
+                "type": "boolean",
+                "example": "false"
+              },
+              "2": {
+                "type": "boolean",
+                "example": "false"
+              },
+              "3": {
+                "type": "boolean",
+                "example": "false"
+              },
+              "4": {
+                "type": "boolean",
+                "example": "false"
+              }
+            },
+            "weight":{
+              "type": "number",
+              "example": 89,
+              "minimum": 35
+            },
+            "calories":{
+              "type": "number",
+              "example": 140,
+              "minimum": 0
+            }
+            ,
+            "category":{
+              "type": "string",
+              "example": "alcoholic drinks"
+            }
+          },
+          "allowed":{
+            "type": "boolean",
+            "example": "false"
+          }
+        }
+      },
       "UserSignUp": {
         "type": "object",
         "required": ["username", "email", "password"],
