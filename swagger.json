@@ -179,10 +179,11 @@
         }
       }
     },
-    "api/diary/:date": {
+    "/api/diary/{date}": {
       "get": {
         "summary": "Gets User's Diary for specific date",
         "tags": ["Diary Controllers"],
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -193,7 +194,7 @@
           }
         ],
         "description": "This operation provides to get diary for a specific date",
-        "security": [{ "Bearer": [] }],
+      
         "requestBody": {
           "description": "Getting Diary for a specific date object",
           "required": false,
@@ -227,6 +228,7 @@
       "post": {
         "summary": "Adds exercise or product into User's Diary",
         "tags": ["Diary Controllers"],
+        "security": [{ "Bearer": [] }],
         "description": "This operation provides to add exercise or product to user's diary",
         "parameters": [
           {
@@ -237,8 +239,7 @@
             "description": "Date in format 11-11-2023"
           }
         ],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
+          "requestBody": {
           "description": "Posting info to Diary object",
           "required": true,
           "content": {
@@ -277,6 +278,7 @@
       "patch": {
         "summary": "Removes exercise or product from User's Diary",
         "tags": ["Diary Controllers"],
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
@@ -287,7 +289,6 @@
           }
         ],
         "description": "This operation provides to remove exercise or product from user's diary",
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Updating Diary for a specific date object",
           "required": true,
@@ -528,7 +529,7 @@
         }
       }
     },
-    "securitySchemas": {
+    "securitySchemes": {
       "Bearer": {
         "type": "http",
         "scheme": "bearer",
