@@ -5,7 +5,7 @@ import Exercise from "../models/Exercise.js";
 import Product from "../models/Product.js";
 
 const addDiary = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner, blood } = req.user;
   const { date } = req.params;
   const { doneExercises, consumedProducts } = req.body;
 
@@ -19,7 +19,6 @@ const addDiary = async (req, res) => {
     for (const exerciseObj of doneExercises) {
       const { exercise, time, calories } = exerciseObj;
       const foundExercise = await Exercise.findById(exercise);
-      console.log('(foundExercise)', (foundExercise))
 
       const newExercise = {
         exercise, 
@@ -31,7 +30,6 @@ const addDiary = async (req, res) => {
         target: foundExercise.target,
       }
    
-
       updatedDoneExercises.push(newExercise);
       burnedCalories += calories;
     
@@ -40,19 +38,18 @@ const addDiary = async (req, res) => {
 }
 
 if (consumedProducts && consumedProducts.length > 0) {
+
   const updatedConsumedProducts = [];
   for (const productObj of consumedProducts) {
     const { product, amount, calories } = productObj;
     const foundProduct = await Product.findById(product);
-    console.log('(foundProduct)', (foundProduct))
-
     const newProduct = {
       product, 
       amount, 
       calories,
       title: foundProduct.title,
       category: foundProduct.category,
-      groupBloodNotAllowed:foundProduct.groupBloodNotAllowed,
+      groupBloodNotAllowed: foundProduct.groupBloodNotAllowed[blood],
     }
  
     updatedConsumedProducts.push(newProduct);

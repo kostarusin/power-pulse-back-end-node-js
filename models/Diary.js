@@ -68,7 +68,7 @@ const ConsumeProductSchema = new Schema(
       required: true,
     },
     groupBloodNotAllowed: {
-      type: Object,
+      type: Boolean,
       required: true,
     }
   },
