@@ -3,12 +3,13 @@ import Joi from "joi";
 
 import { handleSaveError, runValidatorsAtUpdate } from "./hooks.js";
 
-const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[0-2])\-\d{4}$/;
 
 const DoneExerciseSchema = new Schema(
   {
     exercise: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'exercise',
       required: true,
     },
     time: {
@@ -21,14 +22,31 @@ const DoneExerciseSchema = new Schema(
       min: 1,
       required: true,
     },
+    bodyPart: {
+      type: String,
+      required: true,
+    },
+    equipment: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    target: {
+      type: String,
+      required: true,
+    }
   },
-  { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } }
+  { versionKey: false }
 );
 
 const ConsumeProductSchema = new Schema(
   {
     product: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "product",
       required: true,
     },
     amount: {
@@ -41,8 +59,20 @@ const ConsumeProductSchema = new Schema(
       min: 1,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    groupBloodNotAllowed: {
+      type: Object,
+      required: true,
+    }
   },
-  { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } }
+  { versionKey: false }
 );
 
 const DiarySchema = new Schema(
@@ -67,7 +97,7 @@ const DiarySchema = new Schema(
         message:
           "At least one of fields should be filled: doneExercises or consumedProducts",
       },
-    },
+    }, 
     consumedProducts: {
       type: [ConsumeProductSchema],
       default: undefined,
@@ -88,9 +118,9 @@ const DiarySchema = new Schema(
       type: Number,
       min: 0,
       required: true,
-    }
+    },
   },
-  { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 }  }
+  { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } }
 );
 
 DiarySchema.post("save", handleSaveError);
@@ -100,13 +130,10 @@ DiarySchema.pre("findOneAndUpdate", runValidatorsAtUpdate);
 DiarySchema.post("findOneAndUpdate", handleSaveError);
 
 export const diaryAddSchema = Joi.object({
-  date: Joi.string().required().messages({
-    "any.required": `missing required date field`,
-  }),
   doneExercises: Joi.array().items({
     exercise: Joi.string().required().messages({
-        "any.required": `missing required exercise field`,
-      }),
+      "any.required": `missing required exercise field`,
+    }),
     time: Joi.number().min(1).required().messages({
         "any.required": `missing required time field`,
       }),
@@ -116,19 +143,18 @@ export const diaryAddSchema = Joi.object({
   }),
   consumedProducts: Joi.array().items({
     product: Joi.string().required().messages({
-        "any.required": `missing required product field`,
-      }),
+      "any.required": `missing required product field`,
+    }),
     amount: Joi.number().min(1).required().messages({
-        "any.required": `missing required amount field`,
-      }),
+      "any.required": `missing required amount field`,
+    }),
     calories: Joi.number().min(1).required().messages({
-        "any.required": `missing required calories field`,
-      }),
+      "any.required": `missing required calories field`,
+    }),
   }),
   burnedCalories: Joi.number().min(0),
   consumedCalories: Joi.number().min(0),
-}).xor('doneExercises', 'consumedProducts');
+}).xor("doneExercises", "consumedProducts");
 
 export const Diary = model("diary", DiarySchema);
-
-
+export const DoneExecises = model("doneExercises", DoneExerciseSchema);

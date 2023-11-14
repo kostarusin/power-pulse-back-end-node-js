@@ -179,12 +179,66 @@
         }
       }
     },
-    "/api/diary": {
+    "/api/diary/{date}": {
+      "get": {
+        "summary": "Gets User's Diary for specific date",
+        "tags": ["Diary Controllers"],
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "type": "string",
+            "description": "Date in format 11-11-2023"
+          }
+        ],
+        "description": "This operation provides to get diary for a specific date",
+
+        "requestBody": {
+          "description": "Getting Diary for a specific date object",
+          "required": false,
+          "content": {}
+        },
+        "responses": {
+          "201": {
+            "description": "You have successfully got the Diary object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
       "post": {
         "summary": "Adds exercise or product into User's Diary",
         "tags": ["Diary Controllers"],
-        "description": "This operation provides to add exercise or product to user's diary",
         "security": [{ "Bearer": [] }],
+        "description": "This operation provides to add exercise or product to user's diary",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "type": "string",
+            "description": "Date in format 11-11-2023"
+          }
+        ],
         "requestBody": {
           "description": "Posting info to Diary object",
           "required": true,
@@ -221,70 +275,27 @@
           }
         }
       },
-      "get": {
-        "summary": "Gets User's Diary for specific date",
-        "tags": ["Diary Controllers"],
-        "description": "This operation provides to get diary for a specific date",
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Getting Diary for a specific date object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GettingAndUpdatingDiary"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "You have successfully got the Diary object",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DiaryResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)"
-          },
-          "401": {
-            "description": "Not authorized"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "500": {
-            "description": "Server Error"
-          }
-        }
-      }
-    },
-    "api/diary/:id": {
       "patch": {
         "summary": "Removes exercise or product from User's Diary",
         "tags": ["Diary Controllers"],
+        "security": [{ "Bearer": [] }],
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "date",
             "required": true,
             "type": "string",
-            "description": "ID of exercise or product"
+            "description": "Date in format 11-11-2023"
           }
         ],
         "description": "This operation provides to remove exercise or product from user's diary",
-        "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Updating Diary for a specific date object",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GettingAndUpdatingDiary"
+                "$ref": "#/components/schemas/UpdatingDiary"
               }
             }
           }
@@ -391,11 +402,6 @@
         "oneOf": [
           {
             "properties": {
-              "date": {
-                "type": "string",
-                "format": "date",
-                "example": "11/11/2023"
-              },
               "doneExercises": {
                 "type": "array",
                 "items": {
@@ -406,7 +412,7 @@
                     "calories": { "type": "integer" }
                   },
                   "example": {
-                    "exercise": "Air bike",
+                    "exercise": "6550c34234e60d02be7da247",
                     "time": "180",
                     "calories": "312"
                   },
@@ -421,7 +427,7 @@
               "date": {
                 "type": "string",
                 "format": "date",
-                "example": "11/11/2023"
+                "example": "11-11-2023"
               },
               "consumedProducts": {
                 "type": "array",
@@ -433,7 +439,7 @@
                     "calories": { "type": "integer" }
                   },
                   "example": {
-                    "product": "Spikachki",
+                    "product": "6550c86543e60d02be7da247",
                     "amount": "100",
                     "calories": "337"
                   },
@@ -448,14 +454,14 @@
       "DiaryResponse": {
         "type": "object",
         "properties": {
-          "id": {
+          "_id": {
             "type": "string",
             "example": "6550c426088f7bcbd5c2d456"
           },
           "date": {
             "type": "string",
             "format": "date",
-            "example": "11/11/2023"
+            "example": "11-11-2023"
           },
           "owner": {
             "type": "string",
@@ -470,12 +476,33 @@
               "properties": {
                 "product": { "type": "string" },
                 "amount": { "type": "integer" },
-                "calories": { "type": "integer" }
+                "calories": { "type": "integer" },
+                "title": { "type": "string" },
+                "category": { "type": "string" },
+                "groupBloodNotAllowed": {
+                  "type": "object",
+                  "properties": {
+                    "1": { "type": "boolean" },
+                    "2": { "type": "boolean" },
+                    "3": { "type": "boolean" },
+                    "4": { "type": "boolean" }
+                  }
+                },
+                "_id": { "type": "string" }
               },
               "example": {
-                "product": "Spikachki",
-                "amount": "100",
-                "calories": "337"
+                "product": "5d51694902b2373622ff5ec3",
+                "amount": "80",
+                "calories": "337",
+                "title": "Midori liqueur",
+                "category": "alcoholic drinks",
+                "groupBloodNotAllowed": {
+                  "1": "false",
+                  "2": "false",
+                  "3": "false",
+                  "4": "false"
+                },
+                "_id": "6550c426088f7bcbd5c2d497"
               }
             }
           },
@@ -486,14 +513,23 @@
               "properties": {
                 "exercise": { "type": "string" },
                 "time": { "type": "integer" },
-                "calories": { "type": "integer" }
+                "calories": { "type": "integer" },
+                "bodyPart": { "type": "string" },
+                "equipment": { "type": "string" },
+                "name": { "type": "string" },
+                "target": { "type": "string" },
+                "_id": { "type": "string" }
               },
               "example": {
-                "exercise": "Air bike",
-                "time": "180" ,
-                "calories": "312" 
+                "exercise": "6550c34234e60d02be7da247",
+                "time": "180",
+                "calories": "312",
+                "bodyPart": "shoulders",
+                "equipment": "kettlebell",
+                "name": "kettlebell alternating press",
+                "target": "delts",
+                "_id": "6550c426088f7bcbd5c2d497"
               }
-
             }
           },
           "createdAt": {
@@ -508,19 +544,18 @@
           }
         }
       },
-      "GettingAndUpdatingDiary": {
+      "UpdatingDiary": {
         "type": "object",
-        "required": ["date"],
+        "required": ["id"],
         "properties": {
-          "date": {
+          "id": {
             "type": "string",
-            "format": "date",
-            "example": "11/11/2023"
+            "example": "6550c426088f7bcbd5c2d499"
           }
         }
       }
     },
-    "securitySchemas": {
+    "securitySchemes": {
       "Bearer": {
         "type": "http",
         "scheme": "bearer",
