@@ -12,8 +12,6 @@ const getAllExercisesTypes = async (req, res) => {
     const equipment = await Filters.find({ filter: 'Equipment' });
     const muscles = await Filters.find({ filter: 'Muscles'  });
     res.status(200).json({ bodyParts, equipment, muscles});
-    console.error('Ошибка при поиске категорий:', error);
-    res.status(500).json({ message: 'Внутренняя ошибка сервера' });
 };
 
 export default {
