@@ -6,6 +6,13 @@ import jimp from "jimp";
 import fs from "fs/promises";
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
+import {v2 as cloudinary} from 'cloudinary';
+
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_NAME, 
+  api_key: process.env.CLOUDINARY_API, 
+  api_secret: process.env.CLOUDINARY_SECRET
+});
 
 const { JWT_SECRET } = process.env;
 
@@ -112,19 +119,16 @@ const updateUserInfo = async (req, res, next) => {
 
   if (req.file) {
     const { path: temporaryName, originalname } = req.file;
-    const storeDir = path.join(process.cwd(), "public", "avatars");
-    const fileName = `${Date.now()}_${originalname}`;
-    avatarURL = path.join(storeDir, fileName);
-
-    const image = await jimp.read(temporaryName);
-    image.resize(250, 250);
-
-    await image.writeAsync(avatarURL);
 
     try {
-      await fs.rename(temporaryName, avatarURL);
+      const result = await cloudinary.uploader.upload(temporaryName, {
+        folder: 'avatars',
+        width: 150,         
+        height: 150,        
+      });
+
+      avatarURL = result.secure_url;
     } catch (err) {
-      await fs.unlink(temporaryName);
       return next(err);
     }
   }
@@ -143,7 +147,11 @@ const updateUserInfo = async (req, res, next) => {
     updatedUserData.avatarURL = avatarURL;
   }
 
-  await User.findByIdAndUpdate(_id, updatedUserData);
+  try {
+    await User.findByIdAndUpdate(_id, updatedUserData);
+  } catch (err) {
+    return next(err);
+  }
 
   const responsePayload = {
     username,
