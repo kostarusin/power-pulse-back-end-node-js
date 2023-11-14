@@ -201,7 +201,7 @@
           "content": {}
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "You have successfully got the Diary object",
             "content": {
               "application/json": {
@@ -722,7 +722,7 @@
                     "calories": { "type": "integer" }
                   },
                   "example": {
-                    "exercise": "6550c34234e60d02be7da247",
+                    "exercise": "64f2458d6f67bc34bae4f9a9",
                     "time": "180",
                     "calories": "312"
                   },
@@ -831,7 +831,7 @@
                 "_id": { "type": "string" }
               },
               "example": {
-                "exercise": "6550c34234e60d02be7da247",
+                "exercise": "64f2458d6f67bc34bae4f9a9",
                 "time": "180",
                 "calories": "312",
                 "bodyPart": "shoulders",

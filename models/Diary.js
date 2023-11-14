@@ -9,7 +9,7 @@ const DoneExerciseSchema = new Schema(
   {
     exercise: {
       type: Schema.Types.ObjectId,
-      ref: 'exercise',
+      ref: "exercise",
       required: true,
     },
     time: {
@@ -37,7 +37,7 @@ const DoneExerciseSchema = new Schema(
     target: {
       type: String,
       required: true,
-    }
+    },
   },
   { versionKey: false }
 );
@@ -68,9 +68,9 @@ const ConsumeProductSchema = new Schema(
       required: true,
     },
     groupBloodNotAllowed: {
-      type: Object,
+      type: Boolean,
       required: true,
-    }
+    },
   },
   { versionKey: false }
 );
@@ -89,25 +89,11 @@ const DiarySchema = new Schema(
     },
     doneExercises: {
       type: [DoneExerciseSchema],
-      default: undefined,
-      validate: {
-        validator: function (value) {
-          return value && value.length > 0;
-        },
-        message:
-          "At least one of fields should be filled: doneExercises or consumedProducts",
-      },
-    }, 
+      default: [],
+    },
     consumedProducts: {
       type: [ConsumeProductSchema],
-      default: undefined,
-      validate: {
-        validator: function (value) {
-          return value && value.length > 0;
-        },
-        message:
-          "At least one of fields should be filled: doneExercises or consumedProducts",
-      },
+      default: [],
     },
     burnedCalories: {
       type: Number,
@@ -135,11 +121,11 @@ export const diaryAddSchema = Joi.object({
       "any.required": `missing required exercise field`,
     }),
     time: Joi.number().min(1).required().messages({
-        "any.required": `missing required time field`,
-      }),
+      "any.required": `missing required time field`,
+    }),
     calories: Joi.number().min(1).required().messages({
-        "any.required": `missing required calories field`,
-      }),
+      "any.required": `missing required calories field`,
+    }),
   }),
   consumedProducts: Joi.array().items({
     product: Joi.string().required().messages({
@@ -154,7 +140,7 @@ export const diaryAddSchema = Joi.object({
   }),
   burnedCalories: Joi.number().min(0),
   consumedCalories: Joi.number().min(0),
-}).xor("doneExercises", "consumedProducts");
+}).or("doneExercises", "consumedProducts");
 
 export const Diary = model("diary", DiarySchema);
 export const DoneExecises = model("doneExercises", DoneExerciseSchema);

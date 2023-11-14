@@ -5,7 +5,7 @@ import Exercise from "../models/Exercise.js";
 import Product from "../models/Product.js";
 
 const addDiary = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner, blood } = req.user;
   const { date } = req.params;
   const { doneExercises, consumedProducts } = req.body;
 
@@ -19,67 +19,49 @@ const addDiary = async (req, res) => {
     for (const exerciseObj of doneExercises) {
       const { exercise, time, calories } = exerciseObj;
       const foundExercise = await Exercise.findById(exercise);
-      console.log('(foundExercise)', (foundExercise))
 
       const newExercise = {
-        exercise, 
-        time, 
+        exercise,
+        time,
         calories,
         bodyPart: foundExercise.bodyPart,
-        equipment:foundExercise.equipment,
+        equipment: foundExercise.equipment,
         name: foundExercise.name,
         target: foundExercise.target,
-      }
-   
+      };
 
       updatedDoneExercises.push(newExercise);
       burnedCalories += calories;
-    
-  }
-  update.$addToSet = { doneExercises: { $each: updatedDoneExercises } };
-}
-
-if (consumedProducts && consumedProducts.length > 0) {
-  const updatedConsumedProducts = [];
-  for (const productObj of consumedProducts) {
-    const { product, amount, calories } = productObj;
-    const foundProduct = await Product.findById(product);
-    console.log('(foundProduct)', (foundProduct))
-
-    const newProduct = {
-      product, 
-      amount, 
-      calories,
-      title: foundProduct.title,
-      category: foundProduct.category,
-      groupBloodNotAllowed:foundProduct.groupBloodNotAllowed,
     }
- 
-    updatedConsumedProducts.push(newProduct);
-    consumedCalories += calories;
-  
-}
-update.$addToSet = { consumedProducts: { $each: updatedConsumedProducts } };
-}
+    update.$addToSet = { doneExercises: { $each: updatedDoneExercises } };
+  }
 
+  if (consumedProducts && consumedProducts.length > 0) {
+    const updatedConsumedProducts = [];
+    for (const productObj of consumedProducts) {
+      const { product, amount, calories } = productObj;
+      const foundProduct = await Product.findById(product);
+      const newProduct = {
+        product,
+        amount,
+        calories,
+        title: foundProduct.title,
+        category: foundProduct.category,
+        groupBloodNotAllowed: foundProduct.groupBloodNotAllowed[blood],
+      };
 
-
-
-  // if (consumedProducts && consumedProducts.length > 0) {
-
-  //   update.$addToSet = { consumedProducts: { $each: consumedProducts } };
-  //   consumedCalories = consumedProducts.reduce(
-  //     (total, product) => total + product.calories,
-  //     0
-  //   );
-  // }
+      updatedConsumedProducts.push(newProduct);
+      consumedCalories += calories;
+    }
+    update.$addToSet = { consumedProducts: { $each: updatedConsumedProducts } };
+  }
 
   update.$inc = { burnedCalories, consumedCalories };
 
   const options = { new: true, upsert: true };
   const result = await Diary.findOneAndUpdate(conditions, update, options);
 
-  res.status(201).json(result);
+  res.status(200).json(result);
 };
 
 const updateDiary = async (req, res) => {
