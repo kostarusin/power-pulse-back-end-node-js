@@ -168,7 +168,7 @@ const calculateCalories = async (req, res) => {
       .status(400)
       .json({ error: "User data is missing in the request." });
   }
-  const { height, currentWeight, birthday, sex, levelActivity } = req.user;
+  const { _id, height, currentWeight, birthday, sex, levelActivity, bmr } = req.user;
 
   if (!height || !currentWeight || !birthday || !sex || !levelActivity) {
     return res
@@ -187,17 +187,19 @@ const calculateCalories = async (req, res) => {
 
   const age = new Date().getFullYear() - new Date(birthday).getFullYear();
 
-  const bmr = isMale
+  const bmrCalc = isMale
     ? (10 * currentWeight + 6.25 * height - 5 * age + 5) * activityCoefficient
     : (10 * currentWeight + 6.25 * height - 5 * age - 161) *
       activityCoefficient;
+
+  await User.findByIdAndUpdate(_id, {bmr: bmrCalc});
 
   const dailyExerciseTime = 110;
   const result = {
     bmr,
     dailyExerciseTime,
   };
-  res.json(result);
+  res.status(201).json(result);
 };
 
 export default {
