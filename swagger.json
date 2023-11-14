@@ -179,11 +179,64 @@
         }
       }
     },
-    "/api/diary": {
+    "api/diary/:date": {
+      "get": {
+        "summary": "Gets User's Diary for specific date",
+        "tags": ["Diary Controllers"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "type": "string",
+            "description": "Date in format 11-11-2023"
+          }
+        ],
+        "description": "This operation provides to get diary for a specific date",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Getting Diary for a specific date object",
+          "required": false,
+          "content": {}
+        },
+        "responses": {
+          "201": {
+            "description": "You have successfully got the Diary object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      },
       "post": {
         "summary": "Adds exercise or product into User's Diary",
         "tags": ["Diary Controllers"],
         "description": "This operation provides to add exercise or product to user's diary",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "type": "string",
+            "description": "Date in format 11-11-2023"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Posting info to Diary object",
@@ -221,59 +274,16 @@
           }
         }
       },
-      "get": {
-        "summary": "Gets User's Diary for specific date",
-        "tags": ["Diary Controllers"],
-        "description": "This operation provides to get diary for a specific date",
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Getting Diary for a specific date object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GettingAndUpdatingDiary"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "You have successfully got the Diary object",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DiaryResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)"
-          },
-          "401": {
-            "description": "Not authorized"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "500": {
-            "description": "Server Error"
-          }
-        }
-      }
-    },
-    "api/diary/:id": {
       "patch": {
         "summary": "Removes exercise or product from User's Diary",
         "tags": ["Diary Controllers"],
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "date",
             "required": true,
             "type": "string",
-            "description": "ID of exercise or product"
+            "description": "Date in format 11-11-2023"
           }
         ],
         "description": "This operation provides to remove exercise or product from user's diary",
@@ -284,7 +294,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GettingAndUpdatingDiary"
+                "$ref": "#/components/schemas/UpdatingDiary"
               }
             }
           }
@@ -391,11 +401,6 @@
         "oneOf": [
           {
             "properties": {
-              "date": {
-                "type": "string",
-                "format": "date",
-                "example": "11/11/2023"
-              },
               "doneExercises": {
                 "type": "array",
                 "items": {
@@ -421,7 +426,7 @@
               "date": {
                 "type": "string",
                 "format": "date",
-                "example": "11/11/2023"
+                "example": "11-11-2023"
               },
               "consumedProducts": {
                 "type": "array",
@@ -455,7 +460,7 @@
           "date": {
             "type": "string",
             "format": "date",
-            "example": "11/11/2023"
+            "example": "11-11-2023"
           },
           "owner": {
             "type": "string",
@@ -512,14 +517,13 @@
           }
         }
       },
-      "GettingAndUpdatingDiary": {
+      "UpdatingDiary": {
         "type": "object",
-        "required": ["date"],
+        "required": ["id"],
         "properties": {
-          "date": {
+          "id": {
             "type": "string",
-            "format": "date",
-            "example": "11/11/2023"
+            "example": "6550c426088f7bcbd5c2d499"
           }
         }
       }

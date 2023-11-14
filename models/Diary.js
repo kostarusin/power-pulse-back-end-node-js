@@ -3,7 +3,7 @@ import Joi from "joi";
 
 import { handleSaveError, runValidatorsAtUpdate } from "./hooks.js";
 
-const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[0-2])\-\d{4}$/;
 
 const DoneExerciseSchema = new Schema(
   {
@@ -100,9 +100,6 @@ DiarySchema.pre("findOneAndUpdate", runValidatorsAtUpdate);
 DiarySchema.post("findOneAndUpdate", handleSaveError);
 
 export const diaryAddSchema = Joi.object({
-  date: Joi.string().required().messages({
-    "any.required": `missing required date field`,
-  }),
   doneExercises: Joi.array().items({
     exercise: Joi.string().required().messages({
         "any.required": `missing required exercise field`,

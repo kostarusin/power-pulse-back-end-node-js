@@ -5,7 +5,8 @@ import User from "../models/User.js";
 
 const addDiary = async (req, res) => {
   const { _id: owner } = req.user;
-  const { date, doneExercises, consumedProducts } = req.body;
+  const { date } = req.params;
+  const { doneExercises, consumedProducts } = req.body;
 
   const conditions = { owner, date };
   const update = {};
@@ -37,9 +38,9 @@ const addDiary = async (req, res) => {
 };
 
 const updateDiary = async (req, res) => {
-  const { id } = req.params;
+  const { date } = req.params;
   const { _id: owner } = req.user;
-  const { date } = req.body;
+  const { id } = req.body;
   const diary = await Diary.findOne({ owner, date });
 
   if (!diary) {
@@ -95,9 +96,9 @@ const updateDiary = async (req, res) => {
 
 const getDiary = async (req, res) => {
   const { _id: owner, createdAt } = req.user;
-  const { date } = req.body;
+  const { date } = req.params;
 
-  const dateParts = date.split("/");
+  const dateParts = date.split("-");
   if (dateParts.length !== 3) {
     throw HttpError(400, "Invalid date format");
   }

@@ -11,10 +11,10 @@ const diaryRouter = express.Router();
 
 diaryRouter.use(authenticate);
 
-diaryRouter.post("/", isEmptyBody, dairyAddValidate, diaryController.addDiary);
+diaryRouter.post("/:date", isEmptyBody, dairyAddValidate, diaryController.addDiary);
 
-diaryRouter.patch("/:id", isEmptyBody, diaryController.updateDiary);
+diaryRouter.get("/:date", diaryController.getDiary);
 
-diaryRouter.patch("/", isEmptyBody, diaryController.getDiary)
+diaryRouter.patch("/:date", isEmptyBody, diaryController.updateDiary);
 
 export default diaryRouter;
