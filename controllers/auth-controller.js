@@ -111,11 +111,12 @@ const updateUserInfo = async (req, res, next) => {
     blood,
     sex,
     levelActivity,
+    avatarURL, 
   } = req.body;
 
   const { _id } = req.user;
 
-  let avatarURL = null;
+  let uploadedAvatarURL = null;
 
   if (req.file) {
     const { path: temporaryName, originalname } = req.file;
@@ -123,11 +124,11 @@ const updateUserInfo = async (req, res, next) => {
     try {
       const result = await cloudinary.uploader.upload(temporaryName, {
         folder: 'avatars',
-        width: 150,         
-        height: 150,        
+        width: 150,
+        height: 150,
       });
 
-      avatarURL = result.secure_url;
+      uploadedAvatarURL = result.secure_url;
     } catch (err) {
       return next(err);
     }
@@ -143,9 +144,8 @@ const updateUserInfo = async (req, res, next) => {
     sex,
     levelActivity,
   };
-  if (avatarURL) {
-    updatedUserData.avatarURL = avatarURL;
-  }
+
+  updatedUserData.avatarURL = avatarURL || uploadedAvatarURL;
 
   try {
     await User.findByIdAndUpdate(_id, updatedUserData);
@@ -162,10 +162,8 @@ const updateUserInfo = async (req, res, next) => {
     blood,
     sex,
     levelActivity,
+    avatarURL: updatedUserData.avatarURL,
   };
-  if (avatarURL) {
-    responsePayload.avatarURL = avatarURL;
-  }
 
   res.status(200).json(responsePayload);
 };
