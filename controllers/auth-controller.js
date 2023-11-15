@@ -1,9 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import path from "path";
 import User from "../models/User.js";
-import jimp from "jimp";
-import fs from "fs/promises";
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 import {v2 as cloudinary} from 'cloudinary';
@@ -62,6 +59,7 @@ const signin = async (req, res) => {
   res.json({
     token: userInfo.token,
     user: { email: userInfo.email },
+    message: "You have successfully signed in",
   });
 };
 
