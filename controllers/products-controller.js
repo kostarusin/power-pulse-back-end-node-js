@@ -3,6 +3,7 @@ import { ctrlWrapper } from "../decorators/index.js";
 
 const getAllProductsCategories = async (req, res) => {
   const productsCategories = await Product.distinct("category").exec();
+  productsCategories.unshift("all")
 
   res.status(200).json(productsCategories);
 };
