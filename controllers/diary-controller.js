@@ -155,17 +155,30 @@ const getDiary = async (req, res) => {
     throw HttpError(400, "Date should be between registration date and today");
   }
 
-  const result = await Diary.findOne({ owner, date });
+  let result = await Diary.findOne({ owner, date });
 
   if (!result) {
-    throw HttpError(404, "Diary not found");
+    try {
+      // Here you create a new diary entry
+      const basicSettings = {
+        doneExercises: [],
+        consumedProducts: [],
+        burnedCalories: 0,
+        consumedCalories: 0,
+      }
+      result = await Diary.create({ owner, date, ...basicSettings});
+      res.status(201).json(result); // Respond with the newly created diary entry
+    } catch (error) {
+      throw HttpError(500, "Failed to create diary entry");
+    }
+  } else {
+    res.status(200).json(result); // Respond with the found diary entry
   }
-
-  res.status(200).json(result);
-};
+}; 
 
 export default {
   addDiary: ctrlWrapper(addDiary),
   updateDiary: ctrlWrapper(updateDiary),
   getDiary: ctrlWrapper(getDiary),
 };
+ 
