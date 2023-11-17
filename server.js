@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import app from "./app.js";
-//soket
 import { Server } from "socket.io";
-import { createServer } from "http";
+import { createServer } from "https";
 import User from "./models/User.js";
 import { DoneExecises } from "./models/Diary.js";
 import Exercise from "./models/Exercise.js";
