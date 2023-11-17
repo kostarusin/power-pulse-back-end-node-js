@@ -12,6 +12,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
   },
+  path: "/socketio"
 });
 
 io.on("connection", (socket) => {
