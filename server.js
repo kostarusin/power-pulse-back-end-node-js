@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import app from "./app.js";
 import { Server } from "socket.io";
-import { createServer } from "https";
+import { createServer } from "http";
 import User from "./models/User.js";
 import { DoneExecises } from "./models/Diary.js";
 import Exercise from "./models/Exercise.js";
@@ -12,7 +12,6 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
   },
-  path: "/socketio"
 });
 
 io.on("connection", (socket) => {
