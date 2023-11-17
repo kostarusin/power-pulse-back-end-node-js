@@ -74,6 +74,7 @@ const getCurrent = async (req, res) => {
     birthday,
     blood,
     sex,
+    bmr,
     levelActivity,
   } = req.user;
   res.json({
@@ -86,6 +87,7 @@ const getCurrent = async (req, res) => {
     birthday,
     blood,
     sex,
+    bmr,
     levelActivity,
   });
 };
