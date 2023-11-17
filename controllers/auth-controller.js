@@ -120,6 +120,11 @@ const updateUserInfo = async (req, res, next) => {
     const { path: temporaryName, originalname } = req.file;
 
     try {
+      const existingUser = await User.findById(_id);
+      if (existingUser.avatarURL) {
+        const publicId = existingUser.avatarURL.split('/').pop().split('.')[0];
+        await cloudinary.uploader.destroy(`avatars/${publicId}`);
+      }
       const result = await cloudinary.uploader.upload(temporaryName, {
         folder: 'avatars',
         width: 150,
