@@ -8,7 +8,7 @@ const getAllProductsCategories = async (req, res) => {
   res.status(200).json(productsCategories);
 };
 
-const getAllProductsGroupBloodNotAllowed = async (req, res) => {
+const getAllProductsByGroupBlood = async (req, res) => {
   const { blood } = req.user;
   const productsCategories = await Product.find({});
   const productsAllowed = [];
@@ -24,7 +24,7 @@ const getAllProductsGroupBloodNotAllowed = async (req, res) => {
 
 export default {
   getAllProductsCategories: ctrlWrapper(getAllProductsCategories),
-  getAllProductsGroupBloodNotAllowed: ctrlWrapper(
-    getAllProductsGroupBloodNotAllowed
+  getAllProductsByGroupBlood: ctrlWrapper(
+    getAllProductsByGroupBlood
   ),
 };

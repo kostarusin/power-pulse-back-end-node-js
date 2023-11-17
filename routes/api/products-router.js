@@ -8,8 +8,8 @@ productRouter.use(authenticate);
 
 productRouter.get("/", productsController.getAllProductsCategories);
 productRouter.get(
-  "/groupBloodNotAllowed/",
-  productsController.getAllProductsGroupBloodNotAllowed
+  "/byGroupBlood/",
+  productsController.getAllProductsByGroupBlood
 );
 
 export default productRouter;
