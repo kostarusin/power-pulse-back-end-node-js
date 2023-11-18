@@ -1059,15 +1059,7 @@
                 "calories": { "type": "integer" },
                 "title": { "type": "string" },
                 "category": { "type": "string" },
-                "groupBloodNotAllowed": {
-                  "type": "object",
-                  "properties": {
-                    "1": { "type": "boolean" },
-                    "2": { "type": "boolean" },
-                    "3": { "type": "boolean" },
-                    "4": { "type": "boolean" }
-                  }
-                },
+                "groupBloodNotAllowed": { "type": "boolean" },
                 "_id": { "type": "string" }
               },
               "example": {
@@ -1076,12 +1068,7 @@
                 "calories": "337",
                 "title": "Midori liqueur",
                 "category": "alcoholic drinks",
-                "groupBloodNotAllowed": {
-                  "1": "false",
-                  "2": "false",
-                  "3": "false",
-                  "4": "false"
-                },
+                "groupBloodNotAllowed": "true",
                 "_id": "6550c426088f7bcbd5c2d497"
               }
             }
