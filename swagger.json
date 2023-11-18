@@ -316,7 +316,7 @@
           }
         ],
         "requestBody": {
-          "description": "Posting info to Diary object",
+          "description": "Posting info to Diary object. For posting to array 'consumedProducts' change 'exercise' to 'product' and 'time' to 'amount'",
           "required": true,
           "content": {
             "application/json": {

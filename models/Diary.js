@@ -106,7 +106,7 @@ const DiarySchema = new Schema(
       required: true,
     },
   },
-  { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } }
+  { versionKey: false, timestamps: true }
 );
 
 DiarySchema.post("save", handleSaveError);

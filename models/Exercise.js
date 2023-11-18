@@ -8,7 +8,7 @@ const exerciseSchema = new Schema({
     target: { type: String, required: true },
     burnedCalories: { type: Number, required: true },
     time: { type: Number, required: true },
-  }, { versionKey: false, timestamps: { currentTime: () => Date.now() + 7200000 } });
+  }, { versionKey: false, timestamps: true });
 
 const Exercise = model("exercise", exerciseSchema);
 
