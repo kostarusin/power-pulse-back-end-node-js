@@ -57,7 +57,7 @@ const UserSchema = new Schema(
       type: Number,
     },
   },
-  { versionKey: false, timestamps: { createdAt: 'createdAt', currentTime: () => Date.now() + 7200000 } }
+  { versionKey: false, timestamps: true }
 );
 
 UserSchema.post("save", handleSaveError);
