@@ -72,12 +72,12 @@ io.on("connection", (socket) => {
   })
 
 });
+const { DB_URI, PORT = 3000, SOCKET_PORT } = process.env;
 
-httpServer.listen(5050, () => {
+httpServer.listen(SOCKET_PORT, () => {
   console.log("listening on *:5050");
 });
 
-const { DB_URI, PORT = 3000 } = process.env;
 
 mongoose
   .connect(DB_URI)
