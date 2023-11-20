@@ -24,6 +24,7 @@ export const userInfoSchema = Joi.object({
   blood: Joi.number().valid(1, 2, 3, 4),
   sex: Joi.string().valid("male", "female"),
   levelActivity: Joi.number().valid(1, 2, 3, 4, 5),
+  avatarURL: Joi.binary(),
 });
 
 export const userCaloriesSchema = Joi.object({
