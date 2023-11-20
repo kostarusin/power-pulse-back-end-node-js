@@ -131,8 +131,6 @@ const updateUserInfo = async (req, res, next) => {
       }
       const result = await cloudinary.uploader.upload(temporaryName, {
         folder: 'avatars',
-        width: 150,
-        height: 150,
       });
 
       uploadedAvatarURL = result.secure_url;
