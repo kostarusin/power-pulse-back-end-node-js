@@ -113,7 +113,7 @@ const updateUserInfo = async (req, res, next) => {
     blood,
     sex,
     levelActivity,
-    avatarURL, 
+    avatarURL,
   } = req.body;
 
   const { _id } = req.user;
@@ -139,6 +139,8 @@ const updateUserInfo = async (req, res, next) => {
     }
   }
 
+  const finalAvatarURL = avatarURL || uploadedAvatarURL || req.user.avatarURL;
+
   const updatedUserData = {
     username,
     height,
@@ -148,30 +150,18 @@ const updateUserInfo = async (req, res, next) => {
     blood,
     sex,
     levelActivity,
+    avatarURL: finalAvatarURL, // Использование finalAvatarURL
   };
 
-  updatedUserData.avatarURL = avatarURL || uploadedAvatarURL;
-
-  try {
-    await User.findByIdAndUpdate(_id, updatedUserData);
-  } catch (err) {
-    return next(err);
-  }
+  await User.findByIdAndUpdate(_id, updatedUserData);
 
   const responsePayload = {
-    username,
-    height,
-    currentWeight,
-    desiredWeight,
-    birthday,
-    blood,
-    sex,
-    levelActivity,
-    avatarURL: updatedUserData.avatarURL,
+    ...updatedUserData, // Упрощение кода
   };
 
   res.status(200).json(responsePayload);
 };
+
 
 const calculateCalories = async (req, res) => {
   if (!req.user) {
