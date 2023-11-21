@@ -143,7 +143,7 @@
             },
             "required": true
           }
-        ],
+        },
         "responses": { 
           "200": {
             "description": "Information found",
