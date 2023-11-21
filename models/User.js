@@ -61,6 +61,9 @@ const UserSchema = new Schema(
       type: Number,
       default: 0,
     },
+    dailyExerciseTime: {
+      type: Number,
+    },
   },
   { versionKey: false, timestamps: true }
 );

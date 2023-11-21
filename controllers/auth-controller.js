@@ -77,6 +77,7 @@ const getCurrent = async (req, res) => {
     bmr,
     levelActivity,
     createdAt,
+    dailyExerciseTime,
   } = req.user;
   res.json({
     username,
@@ -91,6 +92,7 @@ const getCurrent = async (req, res) => {
     bmr,
     levelActivity,
     createdAt,
+    dailyExerciseTime,
   });
 };
 
@@ -166,12 +168,11 @@ const updateUserInfo = async (req, res, next) => {
     : (10 * updatedData.currentWeight + 6.25 * updatedData.height - 5 * age - 161) *
       activityCoefficient;
 
-  await User.findByIdAndUpdate(_id, {bmr: bmrCalc});
+  await User.findByIdAndUpdate(_id, {bmr: bmrCalc, dailyExerciseTime: 110});
 
-  const dailyExerciseTime = 110;
   const result = {
     bmr: bmrCalc,
-    dailyExerciseTime,
+    dailyExerciseTime: 110,
   };
 const updatedUserData = {
     username,
