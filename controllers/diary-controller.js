@@ -20,6 +20,10 @@ const addDiary = async (req, res) => {
       const { exercise, time, calories } = exerciseObj;
       const foundExercise = await Exercise.findById(exercise);
 
+      if(!foundExercise) {
+        throw HttpError(404, "These is no such exercise")
+      }
+
       const newExercise = {
         exercise,
         time,
@@ -41,6 +45,11 @@ const addDiary = async (req, res) => {
     for (const productObj of consumedProducts) {
       const { product, amount, calories } = productObj;
       const foundProduct = await Product.findById(product);
+
+      if(!foundProduct) {
+        throw HttpError(404, "These is no such product")
+      }
+
       const newProduct = {
         product,
         amount,
