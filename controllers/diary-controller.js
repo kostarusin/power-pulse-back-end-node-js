@@ -20,8 +20,8 @@ const addDiary = async (req, res) => {
       const { exercise, time, calories } = exerciseObj;
       const foundExercise = await Exercise.findById(exercise);
 
-      if(!foundExercise) {
-        throw HttpError(404, "These is no such exercise")
+      if (!foundExercise) {
+        throw HttpError(404, "These is no such exercise");
       }
 
       const newExercise = {
@@ -46,8 +46,8 @@ const addDiary = async (req, res) => {
       const { product, amount, calories } = productObj;
       const foundProduct = await Product.findById(product);
 
-      if(!foundProduct) {
-        throw HttpError(404, "These is no such product")
+      if (!foundProduct) {
+        throw HttpError(404, "These is no such product");
       }
 
       const newProduct = {
@@ -76,7 +76,7 @@ const addDiary = async (req, res) => {
 const updateDiary = async (req, res) => {
   const { date } = req.params;
   const { _id: owner } = req.user;
-  const { id } = req.body;
+  const { type, id } = req.body;
   const diary = await Diary.findOne({ owner, date });
 
   if (!diary) {
@@ -86,12 +86,14 @@ const updateDiary = async (req, res) => {
   let arrayType;
   let update;
 
-  if (diary.doneExercises) {
+  if (type === "exercise") {
     const doneExerciseIndex = diary.doneExercises.findIndex(
       (item) => item._id && item._id.toString() === id
     );
 
-    if (doneExerciseIndex !== -1) {
+    if (doneExerciseIndex === -1) {
+      throw HttpError(404, "Exercise not found");
+    } else {
       arrayType = "doneExercises";
       update = {
         $pull: { doneExercises: { _id: id } },
@@ -100,14 +102,14 @@ const updateDiary = async (req, res) => {
         },
       };
     }
-  }
-
-  if (!arrayType && diary.consumedProducts) {
+  } else if (type === "product") {
     const consumedProductIndex = diary.consumedProducts.findIndex(
       (item) => item._id && item._id.toString() === id
     );
 
-    if (consumedProductIndex !== -1) {
+    if (consumedProductIndex === -1) {
+      throw HttpError(404, "Product not found");
+    } else {
       arrayType = "consumedProducts";
       update = {
         $pull: { consumedProducts: { _id: id } },
@@ -117,10 +119,8 @@ const updateDiary = async (req, res) => {
         },
       };
     }
-  }
-
-  if (!arrayType) {
-    throw HttpError(404, "Item not found in diary");
+  } else {
+    throw HttpError(404, "Type of object is not defined");
   }
 
   const result = await Diary.findOneAndUpdate({ owner, date }, update, {

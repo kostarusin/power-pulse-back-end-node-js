@@ -142,5 +142,14 @@ export const diaryAddSchema = Joi.object({
   consumedCalories: Joi.number().min(0),
 }).or("doneExercises", "consumedProducts");
 
+export const diaryUpdateSchema = Joi.object({
+  type: Joi.string().valid('exercise', 'product').required().messages({
+    "any.required": `missing required type field`,
+  }),
+  id: Joi.string().required().messages({
+    "any.required": `missing required id field`,
+  }),
+})
+
 export const Diary = model("diary", DiarySchema);
 export const DoneExecises = model("doneExercises", DoneExerciseSchema);
