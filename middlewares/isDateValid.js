@@ -11,9 +11,13 @@ const isDateValid = (req, res, next) => {
   const month = parseInt(dateParts[1], 10) - 1;
   const year = parseInt(dateParts[2], 10);
 
-  const requestDate = new Date(year, month, day);
+  const requestDate = new Date(Date.UTC(year, month, day));
   const registrationDate = new Date(createdAt);
-  const today = new Date();
+
+  const utcNow = new Date();
+  const utcTwoHoursAhead = new Date(
+    utcNow.setUTCHours(utcNow.getUTCHours() + 2)
+  );
 
   if (dateParts.length !== 3 || !dateRegex.test(date)) {
     return next(HttpError(400, "Invalid date format"));
@@ -28,10 +32,12 @@ const isDateValid = (req, res, next) => {
         registrationDate.getMonth(),
         registrationDate.getDate()
       ) ||
-    requestDate >
-      new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    requestDate > utcTwoHoursAhead
   ) {
-    throw HttpError(400, "Date should be between registration date and today");
+    throw HttpError(
+      400,
+      "Date should be between registration date and current date"
+    );
   }
 
   next();
