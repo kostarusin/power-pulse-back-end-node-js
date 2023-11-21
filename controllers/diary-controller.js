@@ -125,36 +125,6 @@ const getDiary = async (req, res) => {
   const { _id: owner, createdAt } = req.user;
   const { date } = req.params;
 
-  const dateParts = date.split("-");
-  if (dateParts.length !== 3) {
-    throw HttpError(400, "Invalid date format");
-  }
-
-  const day = parseInt(dateParts[0], 10);
-  const month = parseInt(dateParts[1], 10) - 1;
-  const year = parseInt(dateParts[2], 10);
-
-  const requestDate = new Date(year, month, day);
-  const registrationDate = new Date(createdAt);
-  const today = new Date();
-
-  if (isNaN(requestDate.getTime())) {
-    throw HttpError(400, "Invalid date format");
-  }
-
-  if (
-    requestDate <
-      new Date(
-        registrationDate.getFullYear(),
-        registrationDate.getMonth(),
-        registrationDate.getDate()
-      ) ||
-    requestDate >
-      new Date(today.getFullYear(), today.getMonth(), today.getDate())
-  ) {
-    throw HttpError(400, "Date should be between registration date and today");
-  }
-
   let result = await Diary.findOne({ owner, date });
 
   if (!result) {
