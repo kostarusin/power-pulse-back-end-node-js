@@ -1006,20 +1006,27 @@
             "items": {
               "type": "object",
               "properties": {
-                "product": { "type": "string" },
+                "product": { 
+                  "type": "object",
+                  "properties": {
+                    "_id": { "type": "string" },
+                    "title": { "type": "string" },
+                    "category": { "type": "string" }
+                  } 
+                },
                 "amount": { "type": "integer" },
                 "calories": { "type": "integer" },
-                "title": { "type": "string" },
-                "category": { "type": "string" },
                 "groupBloodNotAllowed": { "type": "boolean" },
                 "_id": { "type": "string" }
               },
               "example": {
-                "product": "5d51694902b2373622ff5ec3",
+                "product": {
+                  "_id": "5d51694902b2373622ff5ec3",
+                  "title": "Midori liqueur",
+                  "category": "alcoholic drinks"
+                },
                 "amount": "80",
                 "calories": "337",
-                "title": "Midori liqueur",
-                "category": "alcoholic drinks",
                 "groupBloodNotAllowed": "true",
                 "_id": "6550c426088f7bcbd5c2d497"
               }
@@ -1030,23 +1037,30 @@
             "items": {
               "type": "object",
               "properties": {
-                "exercise": { "type": "string" },
+                "exercise": { 
+                  "type": "string",
+                  "properties": {
+                    "_id": { "type": "string" },
+                    "bodyPart": { "type": "string" },
+                    "equipment": { "type": "string" },
+                    "name": { "type": "string" },
+                    "target": { "type": "string" }
+                  }
+                },
                 "time": { "type": "integer" },
                 "calories": { "type": "integer" },
-                "bodyPart": { "type": "string" },
-                "equipment": { "type": "string" },
-                "name": { "type": "string" },
-                "target": { "type": "string" },
                 "_id": { "type": "string" }
               },
               "example": {
-                "exercise": "64f2458d6f67bc34bae4f9a9",
+                "exercise": {
+                  "_id": "64f2458d6f67bc34bae4f9a9",
+                  "bodyPart": "shoulders",
+                  "equipment": "kettlebell",
+                  "name": "kettlebell alternating press",
+                  "target": "delts"
+                },
                 "time": "180",
                 "calories": "312",
-                "bodyPart": "shoulders",
-                "equipment": "kettlebell",
-                "name": "kettlebell alternating press",
-                "target": "delts",
                 "_id": "6550c426088f7bcbd5c2d497"
               }
             }
