@@ -1065,11 +1065,16 @@
       },
       "UpdatingDiary": {
         "type": "object",
-        "required": ["id"],
+        "required": ["type", "id"],
         "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["exercise", "product"],
+            "example": "exercise"
+          },
           "id": {
             "type": "string",
-            "example": "6550c426088f7bcbd5c2d499"
+            "example": "64f2458d6f67bc34bae4f9a9"
           }
         }
       }
