@@ -145,7 +145,7 @@
             "required": true
           }
         ],
-        "responses": {
+        "responses": { 
           "200": {
             "description": "Information found",
             "content": {
@@ -408,16 +408,6 @@
         "summary": "Returns all existing product categories in the database",
         "tags": ["Products Controllers"],
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
         "description": "Returns all existing product categories in the database",
 
         "requestBody": {
@@ -457,16 +447,6 @@
         "summary": "Returns to the authorized user all products that are permissible for consumption by their blood type or vice versa",
         "tags": ["Products Controllers"],
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
         "description": "Returns to the authorized user all products that are permissible for consumption by their blood type or vice versa",
 
         "requestBody": {
@@ -505,24 +485,11 @@
       "get": {
         "summary": "Returns all existing workouts in the database",
         "tags": ["Exercises Controllers"],
+
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
+
         "description": "Returns all existing workouts in the database",
 
-        "requestBody": {
-          "description": "Getting all existing workouts in the database",
-          "required": false,
-          "content": {}
-        },
         "responses": {
           "201": {
             "description": "",
@@ -555,23 +522,8 @@
         "summary": "Returns all types of body parts, muscles, and equipment existing in the database",
         "tags": ["Exercises Controllers"],
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
         "description": "Returns all types of body parts, muscles, and equipment existing in the database",
 
-        "requestBody": {
-          "description": "Getting all types of body parts, muscles, and equipment existing in the database",
-          "required": false,
-          "content": {}
-        },
         "responses": {
           "201": {
             "description": "",
