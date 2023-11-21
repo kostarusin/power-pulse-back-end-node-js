@@ -39,7 +39,7 @@ export const userSigninSchema = Joi.object({
 });
 
 export const userInfoSchema = Joi.object({
-  username: Joi.string().min(20).messages({
+  username: Joi.string().max(20).messages({
                     'string.base': `"username" should be a type of 'text'`,
                     'string.empty': `"username" cannot be an empty field`,
                     'string.max': `"username" should have a maximum length of 20`,
