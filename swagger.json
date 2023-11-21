@@ -505,17 +505,9 @@
       "get": {
         "summary": "Returns all existing workouts in the database",
         "tags": ["Exercises Controllers"],
+        
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
+
         "description": "Returns all existing workouts in the database",
 
         "responses": {
@@ -550,16 +542,6 @@
         "summary": "Returns all types of body parts, muscles, and equipment existing in the database",
         "tags": ["Exercises Controllers"],
         "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
         "description": "Returns all types of body parts, muscles, and equipment existing in the database",
 
         "responses": {
