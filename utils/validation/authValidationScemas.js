@@ -73,4 +73,5 @@ export const userInfoSchema = Joi.object({
   sex: Joi.string().valid("male", "female"),
   levelActivity: Joi.number().valid(1, 2, 3, 4, 5),
   avatarURL: Joi.binary(),
+  dailyExerciseTime: Joi.number(),
 });
