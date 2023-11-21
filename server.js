@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import app from "./app.js";
 import { Server } from "socket.io";
+import http from "http";
 import { createServer } from "http";
 import User from "./models/User.js";
 import { DoneExecises } from "./models/Diary.js";
 import Exercise from "./models/Exercise.js";
 
-const httpServer = createServer();
-
-const io = new Server(httpServer, {
+const server = http.createServer(app);
+const io = new Server(server, {
   cors: {
     origin: "*",
   },
@@ -27,15 +27,21 @@ io.on("connection", (socket) => {
   });
   socket.on("getAllBurnedCalories", async () => {
     try {
-        const allCalories = await DoneExecises.aggregate([
-            { $unwind: "$doneExercises" },
-            { $group: { _id: null, totalCalories: { $sum: "$doneExercises.calories" } } }
-        ]);
-        const totalCalories = allCalories.length > 0 ? result[0].totalCalories : 0;
+      const allCalories = await DoneExecises.aggregate([
+        { $unwind: "$doneExercises" },
+        {
+          $group: {
+            _id: null,
+            totalCalories: { $sum: "$doneExercises.calories" },
+          },
+        },
+      ]);
+      const totalCalories =
+        allCalories.length > 0 ? result[0].totalCalories : 0;
 
-        io.emit("totalBurnedCalories", totalCalories);
+      io.emit("totalBurnedCalories", totalCalories);
     } catch (error) {
-        console.error("Error querying MongoDB:", error.message);
+      console.error("Error querying MongoDB:", error.message);
     }
   });
   socket.on("getAllVideoExercises", async () => {
@@ -50,34 +56,26 @@ io.on("connection", (socket) => {
     try {
       const allTime = await DoneExecises.aggregate([
         { $unwind: "$doneExercises" },
-        { $group: {_id: null, totalTime: {$sum: "doneExercises.time" }}}
-      ])
+        { $group: { _id: null, totalTime: { $sum: "doneExercises.time" } } },
+      ]);
 
       const totalTime = allTime.length > 0 ? result[0].totalTime : 0;
-      io.emit("totalExercisesTime", totalTime)
-      
+      io.emit("totalExercisesTime", totalTime);
     } catch (error) {
       console.error("Error querying MongoDB:", error.message);
     }
-  })
+  });
   socket.on("getAllDoneExercises", async () => {
     try {
-      const allDoneExercises = await DoneExecises.find()
+      const allDoneExercises = await DoneExecises.find();
 
-      io.emit("totalDoneExercises", allDoneExercises.length)
-      
+      io.emit("totalDoneExercises", allDoneExercises.length);
     } catch (error) {
       console.error("Error querying MongoDB:", error.message);
     }
-  })
-
+  });
 });
 const { DB_URI, PORT = 3000, SOCKET_PORT } = process.env;
-
-httpServer.listen(SOCKET_PORT, () => {
-  console.log("listening on *:5050");
-});
-
 
 mongoose
   .connect(DB_URI)
