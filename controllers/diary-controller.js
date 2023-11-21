@@ -7,70 +7,62 @@ import Product from "../models/Product.js";
 const addDiary = async (req, res) => {
   const { _id: owner, blood } = req.user;
   const { date } = req.params;
-  const { doneExercises, consumedProducts } = req.body;
-
   const conditions = { owner, date };
-  const update = {};
-  let burnedCalories = 0;
-  let consumedCalories = 0;
+  let data;
 
-  if (doneExercises && doneExercises.length > 0) {
-    const updatedDoneExercises = [];
-    for (const exerciseObj of doneExercises) {
-      const { exercise, time, calories } = exerciseObj;
-      const foundExercise = await Exercise.findById(exercise);
+  if (req.body.doneExercises && req.body.doneExercises.length > 0) {
+    const { exercise, time, calories } = req.body.doneExercises[0];
 
-      if (!foundExercise) {
-        throw HttpError(404, "These is no such exercise");
-      }
-
-      const newExercise = {
-        exercise,
-        time,
-        calories,
-        bodyPart: foundExercise.bodyPart,
-        equipment: foundExercise.equipment,
-        name: foundExercise.name,
-        target: foundExercise.target,
-      };
-
-      updatedDoneExercises.push(newExercise);
-      burnedCalories += calories;
+    const foundExercise = await Exercise.findById(exercise).populate(
+      "bodyPart equipment name target"
+    );
+    if (!foundExercise) {
+      throw new HttpError(404, "There is no such exercise");
     }
-    update.$addToSet = { doneExercises: { $each: updatedDoneExercises } };
+
+    data = await Diary.findOneAndUpdate(
+      conditions,
+      {
+        $inc: { burnedCalories: +calories },
+        $push: {
+          doneExercises: {
+            exercise: foundExercise,
+            time,
+            calories,
+          },
+        },
+      },
+      { new: true }
+    );
   }
 
-  if (consumedProducts && consumedProducts.length > 0) {
-    const updatedConsumedProducts = [];
-    for (const productObj of consumedProducts) {
-      const { product, amount, calories } = productObj;
-      const foundProduct = await Product.findById(product);
-
-      if (!foundProduct) {
-        throw HttpError(404, "These is no such product");
-      }
-
-      const newProduct = {
-        product,
-        amount,
-        calories,
-        title: foundProduct.title,
-        category: foundProduct.category,
-        groupBloodNotAllowed: foundProduct.groupBloodNotAllowed[blood],
-      };
-
-      updatedConsumedProducts.push(newProduct);
-      consumedCalories += calories;
+  if (req.body.consumedProducts && req.body.consumedProducts.length > 0) {
+    const { product, amount, calories } = req.body.consumedProducts[0];
+  
+    const foundProduct = await Product.findById(product).populate('title', 'category')
+    const groupBloodNotAllowed = foundProduct.groupBloodNotAllowed[blood];
+    if (!foundProduct) {
+      throw HttpError(404, "These is no such product");
     }
-    update.$addToSet = { consumedProducts: { $each: updatedConsumedProducts } };
+
+    data = await Diary.findOneAndUpdate(
+      conditions,
+      {
+        $inc: { consumedCalories: +calories },
+        $push: {
+          consumedProducts: {
+            product: foundProduct,
+            amount,
+            calories,
+            groupBloodNotAllowed,
+          },
+        },
+      },
+      { new: true }
+    );
   }
 
-  update.$inc = { burnedCalories, consumedCalories };
-
-  const options = { new: true, upsert: true };
-  const result = await Diary.findOneAndUpdate(conditions, update, options);
-
-  res.status(200).json(result);
+  res.status(200).json(data);
 };
 
 const updateDiary = async (req, res) => {
