@@ -196,45 +196,6 @@ const updatedUserData = {
 };
 
 
-const calculateCalories = async (req, res) => {
-  if (!req.user) {
-    return res
-      .status(400)
-      .json({ error: "User data is missing in the request." });
-  }
-  const { _id, height, currentWeight, birthday, sex, levelActivity, bmr } = req.user;
-
-  if (!height || !currentWeight || !birthday || !sex || !levelActivity) {
-    return res
-      .status(400)
-      .json({ error: "One or more required user properties are missing." });
-  }
-
-  const isMale = sex.toLowerCase() === "male";
-  const activityCoefficient = {
-    1: 1.2,
-    2: 1.375,
-    3: 1.55,
-    4: 1.725,
-    5: 1.9,
-  }[levelActivity];
-
-  const age = new Date().getFullYear() - new Date(birthday).getFullYear();
-
-  const bmrCalc = isMale
-    ? (10 * currentWeight + 6.25 * height - 5 * age + 5) * activityCoefficient
-    : (10 * currentWeight + 6.25 * height - 5 * age - 161) *
-      activityCoefficient;
-
-  await User.findByIdAndUpdate(_id, {bmr: bmrCalc});
-
-  const dailyExerciseTime = 110;
-  const result = {
-    bmr,
-    dailyExerciseTime,
-  };
-  res.status(201).json(result);
-};
 
 export default {
   signup: ctrlWrapper(signup),
@@ -242,5 +203,4 @@ export default {
   getCurrent: ctrlWrapper(getCurrent),
   signout: ctrlWrapper(signout),
   updateUserInfo: ctrlWrapper(updateUserInfo),
-  calculateCalories: ctrlWrapper(calculateCalories),
 };

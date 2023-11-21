@@ -10,6 +10,7 @@ import authRouter from "./routes/api/auth-router.js";
 import productRouter from "./routes/api/products-router.js";
 import diaryRouter from "./routes/api/diary-router.js";
 import exerciseRouter from "./routes/api/exercises-router.js";
+import statiscticsRouter from "./routes/api/statistics-router.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
+app.use('/api', statiscticsRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/diary", diaryRouter);
