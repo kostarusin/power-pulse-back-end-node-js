@@ -134,11 +134,10 @@
       "get": {
         "summary": "get information about the current user",
         "tags": ["User Controllers"],
+        "security": [{ "Bearer": [] }],
         "description": "This operation provides users with the ability to check the current user's information",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization token",
+        "headers": {
+          "Authenticate": {
             "schema": {
               "type": "string"
             },
@@ -165,55 +164,11 @@
         }
       }
     },
-    "/auth/calories": {
-      "post": {
-        "summary": "count user calories by their information",
-        "tags": ["User Controllers"],
-        "description": "This operation provides users with the ability to count their calories for everyday consumption",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserCalories"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization token",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Calories count",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserCaloriesResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Basic info is required"
-          },
-          "500": {
-            "description": "Server Error"
-          }
-        }
-      }
-    },
     "/auth/updatedetails": {
       "post": {
         "summary": "update user profile information",
         "tags": ["User Controllers"],
+        "security": [{ "Bearer": [] }],
         "description": "This operation provides users with the ability to add/update their information",
         "requestBody": {
           "required": true,

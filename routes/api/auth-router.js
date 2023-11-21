@@ -19,8 +19,6 @@ const authRouter = express.Router();
 
 authRouter.post("/signup", userSignupValidate, authController.signup);
 
-authRouter.post("/calories", authenticate, authController.calculateCalories);
-
 authRouter.post("/signin", userSigninValidate, authController.signin);
 
 authRouter.get("/current", authenticate, authController.getCurrent);
