@@ -145,7 +145,7 @@
             "required": true
           }
         ],
-        "responses": {
+        "responses": { 
           "200": {
             "description": "Information found",
             "content": {
@@ -518,11 +518,6 @@
         ],
         "description": "Returns all existing workouts in the database",
 
-        "requestBody": {
-          "description": "Getting all existing workouts in the database",
-          "required": false,
-          "content": {}
-        },
         "responses": {
           "201": {
             "description": "",
@@ -567,11 +562,6 @@
         ],
         "description": "Returns all types of body parts, muscles, and equipment existing in the database",
 
-        "requestBody": {
-          "description": "Getting all types of body parts, muscles, and equipment existing in the database",
-          "required": false,
-          "content": {}
-        },
         "responses": {
           "201": {
             "description": "",
