@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
       ])
 
       const totalTime = allTime.length > 0 ? result[0].totalTime : 0;
-      io.emit("totalExercisesTime", totalTime.length)
+      io.emit("totalExercisesTime", totalTime)
       
     } catch (error) {
       console.error("Error querying MongoDB:", error.message);
