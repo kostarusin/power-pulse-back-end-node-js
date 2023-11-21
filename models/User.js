@@ -9,6 +9,7 @@ const UserSchema = new Schema(
     username: {
       type: String,
       required: [true, "Set password for user"],
+      max: 20,
     },
     email: {
       type: String,
@@ -28,14 +29,17 @@ const UserSchema = new Schema(
     height: {
       type: Number,
       min: 150,
+      max: 300,
     },
     currentWeight: {
       type: Number,
       min: 35,
+      max: 200,
     },
     desiredWeight: {
       type: Number,
       min: 35,
+      max: 200,
     },
     birthday: {
       type: Date,
@@ -55,6 +59,7 @@ const UserSchema = new Schema(
     },
     bmr: {
       type: Number,
+      default: 0,
     },
   },
   { versionKey: false, timestamps: true }
