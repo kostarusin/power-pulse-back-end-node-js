@@ -7,7 +7,7 @@
   },
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json", "multipart/form-data"],
-  "servers": [{ "url": "https://power-pulse-fx29.onrender.com" }],
+  "servers": [{ "url": "https://power-pulse-fx29.onrender.com/api" }],
   "tags": [
     {
       "name": "Auth Controllers",
@@ -32,7 +32,7 @@
   ],
 
   "paths": {
-    "/api/auth/signup": {
+    "/auth/signup": {
       "post": {
         "summary": "User registration",
         "tags": ["Auth Controllers"],
@@ -67,7 +67,7 @@
         }
       }
     },
-    "/api/auth/signin": {
+    "/auth/signin": {
       "post": {
         "summary": "User login",
         "tags": ["Auth Controllers"],
@@ -102,7 +102,7 @@
         }
       }
     },
-    "/api/auth/logout": {
+    "/auth/logout": {
       "post": {
         "summary": "Logout user",
         "tags": ["Auth Controllers"],
@@ -130,7 +130,7 @@
         }
       }
     },
-    "/api/auth/current": {
+    "/auth/current": {
       "get": {
         "summary": "get information about the current user",
         "tags": ["User Controllers"],
@@ -165,7 +165,7 @@
         }
       }
     },
-    "/api/auth/calories": {
+    "/auth/calories": {
       "post": {
         "summary": "count user calories by their information",
         "tags": ["User Controllers"],
@@ -210,7 +210,7 @@
         }
       }
     },
-    "/api/auth/updatedetails": {
+    "/auth/updatedetails": {
       "post": {
         "summary": "update user profile information",
         "tags": ["User Controllers"],
@@ -255,7 +255,7 @@
         }
       }
     },
-    "/api/diary/{date}": {
+    "/diary/{date}": {
       "get": {
         "summary": "Gets User's Diary for specific date",
         "tags": ["Diary Controllers"],
@@ -403,7 +403,7 @@
       }
     }
     ,
-    "/api/products": {
+    "/products": {
       "get": {
         "summary": "Returns all existing product categories in the database",
         "tags": ["Products Controllers"],
@@ -452,7 +452,7 @@
       }
     }
     ,
-    "/api/products/byBloodGroup": {
+    "/products/byBloodGroup": {
       "get": {
         "summary": "Returns to the authorized user all products that are permissible for consumption by their blood type or vice versa",
         "tags": ["Products Controllers"],
@@ -501,7 +501,7 @@
       }
     }
     ,
-    "/api/exercises": {
+    "/exercises": {
       "get": {
         "summary": "Returns all existing workouts in the database",
         "tags": ["Exercises Controllers"],
@@ -550,7 +550,7 @@
       }
     }
     ,
-    "/api/exercises/type": {
+    "/exercises/type": {
       "get": {
         "summary": "Returns all types of body parts, muscles, and equipment existing in the database",
         "tags": ["Exercises Controllers"],
