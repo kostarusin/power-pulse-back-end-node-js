@@ -9,13 +9,11 @@ import {
   userSignupSchema,
   userSigninSchema,
   userInfoSchema,
-  userCaloriesSchema,
 } from "../../utils/validation/authValidationScemas.js";
 
 const userSignupValidate = validateBody(userSignupSchema);
 const userSigninValidate = validateBody(userSigninSchema);
 const userInfoValidate = validateBody(userInfoSchema);
-const userCaloriesValidate = validateBody(userCaloriesSchema);
 
 const authRouter = express.Router();
 

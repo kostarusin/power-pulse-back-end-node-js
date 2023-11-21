@@ -116,6 +116,15 @@ const updateUserInfo = async (req, res, next) => {
     avatarURL,
   } = req.body;
 
+  const updatedData = {
+    height: height || req.user.height,
+    currentWeight: currentWeight || req.user.currentWeight,
+    desiredWeight: desiredWeight || req.user.desiredWeight,
+    birthday: birthday || req.user.birthday,
+    blood: blood || req.user.blood,
+    sex: sex || req.user.sex,
+    levelActivity: levelActivity || req.user.levelActivity,
+  };
   const { _id } = req.user;
 
   let uploadedAvatarURL = null;
@@ -141,7 +150,30 @@ const updateUserInfo = async (req, res, next) => {
 
   const finalAvatarURL = avatarURL || uploadedAvatarURL || req.user.avatarURL;
 
-  const updatedUserData = {
+  const isMale = updatedData.sex.toLowerCase() === "male";
+  const activityCoefficient = {
+    1: 1.2,
+    2: 1.375,
+    3: 1.55,
+    4: 1.725,
+    5: 1.9,
+  }[updatedData.levelActivity];
+
+  const age = new Date().getFullYear() - new Date(updatedData.birthday).getFullYear();
+
+  const bmrCalc = isMale
+    ? (10 * updatedData.currentWeight + 6.25 * updatedData.height - 5 * age + 5) * activityCoefficient
+    : (10 * updatedData.currentWeight + 6.25 * updatedData.height - 5 * age - 161) *
+      activityCoefficient;
+
+  await User.findByIdAndUpdate(_id, {bmr: bmrCalc});
+
+  const dailyExerciseTime = 110;
+  const result = {
+    bmr: bmrCalc,
+    dailyExerciseTime,
+  };
+const updatedUserData = {
     username,
     height,
     currentWeight,
@@ -150,15 +182,15 @@ const updateUserInfo = async (req, res, next) => {
     blood,
     sex,
     levelActivity,
-    avatarURL: finalAvatarURL, // Использование finalAvatarURL
+    avatarURL: finalAvatarURL,
   };
-
   await User.findByIdAndUpdate(_id, updatedUserData);
 
   const responsePayload = {
-    ...updatedUserData, // Упрощение кода
+    ...updatedUserData,
+    ...result
   };
-
+  
   res.status(200).json(responsePayload);
 };
 
