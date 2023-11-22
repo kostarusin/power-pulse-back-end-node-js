@@ -26,15 +26,15 @@ The application will be available at http://localhost:3000.
 
 ### Authors:
 
-Artem Bortianyi - Overall project lead
-Nikita Reva - Backend lead
-Andrii Postelnyk - Developer
-Anna Vynnychenko - Developer
-Liliia Sviatenko - Developer
-Maxim Lagutin - Developer
-Olena Butsneva - Developer
-Victoria - Developer
-Vlad Kovalytskyi - Developer
-Hennadii Bublyk - Developer
-Olsha Hresko - Developer
-Kostiantyn Tarusin - Developer
+- Artem Bortianyi - Overall project lead
+- Nikita Reva - Backend lead
+- Andrii Postelnyk - Developer
+- Anna Vynnychenko - Developer
+- Liliia Sviatenko - Developer
+- Maxim Lagutin - Developer
+- Olena Butsneva - Developer
+- Victoria Vorobyova - Developer
+- Vlad Kovalynskyi - Developer
+- Hennadii Bublyk - Developer
+- Olha Hresko - Developer
+- Kostiantyn Tarusin - Developer

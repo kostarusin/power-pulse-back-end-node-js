@@ -26,15 +26,15 @@ Die Anwendung ist unter http://localhost:3000 verfügbar.
 
 ### Autoren:
 
-Artem Bortianyi - Gesamtprojektleitung
-Nikita Reva - Leitung des Backends
-Andrii Postelnyk - Entwickler
-Anna Vynnychenko - Entwicklerin
-Liliia Sviatenko - Entwicklerin
-Maxim Lagutin - Entwickler
-Olena Butsneva - Entwicklerin
-Victoria - Entwicklerin
-Vlad Kovalytskyi - Entwickler
-Hennadii Bublyk - Entwickler
-Olsha Hresko - Entwicklerin
-Kostiantyn Tarusin - Entwickler
+- Artem Bortianyi - Gesamtprojektleitung
+- Nikita Reva - Leitung des Backends
+- Andrii Postelnyk - Entwickler
+- Anna Vynnychenko - Entwicklerin
+- Liliia Sviatenko - Entwicklerin
+- Maxim Lagutin - Entwickler
+- Olena Butsneva - Entwicklerin
+- Victoria Vorobyova - Entwicklerin
+- Vlad Kovalynskyi - Entwickler
+- Hennadii Bublykov - Entwickler
+- Olha Hresko - Entwicklerin
+- Kostiantyn Tarusin - Entwickler
