@@ -6,7 +6,7 @@ import swaggerUiExpress from "swagger-ui-express";
 import * as fs from 'fs';
 
 import { Server } from "socket.io";
-import https from "https";
+import http from "http";
 import User from "./models/User.js";
 import { Diary } from "./models/Diary.js";
 import Exercise from "./models/Exercise.js";
@@ -24,7 +24,7 @@ const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-const server = https.createServer(app)
+const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
     origin: "*",

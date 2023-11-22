@@ -136,14 +136,16 @@
         "tags": ["User Controllers"],
         "security": [{ "Bearer": [] }],
         "description": "This operation provides users with the ability to check the current user's information",
-        "headers": {
-          "Authenticate": {
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization token",
             "schema": {
               "type": "string"
             },
             "required": true
           }
-        },
+        ],
         "responses": { 
           "200": {
             "description": "Information found",
