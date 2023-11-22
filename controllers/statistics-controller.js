@@ -14,14 +14,14 @@ const statistics = async (req, res) => {
                 _id: null, 
                 totalCalories: { $sum: "$doneExercises.calories" },
                 totalTime: { $sum: "$doneExercises.time" }
-            } 
+            }
         }
     ]);
 
     const allExercises = await Exercise.find();
     const totalExercises = allExercises.length;
 
-    const allDoneExercises = await Diary.find({ doneExercises: { $exists: true } })
+    const allDoneExercises = await Diary.find({ doneExercises: { $exists: true }})
     const totalDoneExercises = allDoneExercises.length;
 
     res.status(200).json({
