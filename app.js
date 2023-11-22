@@ -4,10 +4,9 @@ import cors from "cors";
 import "dotenv/config";
 import swaggerUiExpress from "swagger-ui-express";
 import * as fs from 'fs';
-const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf8'));
 
 import { Server } from "socket.io";
-import http from "http";
+import https from "https";
 import User from "./models/User.js";
 import { Diary } from "./models/Diary.js";
 import Exercise from "./models/Exercise.js";
@@ -18,10 +17,12 @@ import diaryRouter from "./routes/api/diary-router.js";
 import exerciseRouter from "./routes/api/exercises-router.js";
 import statiscticsRouter from "./routes/api/statistics-router.js";
 
+const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf8'));
+
+
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
-
 
 const server = http.createServer(app)
 const io = new Server(server, {
@@ -34,16 +35,11 @@ io.on("connection", (socket) => {
   console.log("New frontend connection");
 
   socket.on("getUsers", async () => {
-    try {
       const allUsers = await User.find();
       io.emit("totalUsers", allUsers.length);
-    } catch (error) {
-      console.error("Error querying MongoDB:", error.message);
-    }
   });
   socket.on("getAllBurnedCalories", async () => {
-    try {
-      const allCalories = await DoneExecises.aggregate([
+      const allCalories = await Diary.aggregate([
         { $unwind: "$doneExercises" },
         {
           $group: {
@@ -56,39 +52,24 @@ io.on("connection", (socket) => {
         allCalories.length > 0 ? result[0].totalCalories : 0;
 
       io.emit("totalBurnedCalories", totalCalories);
-    } catch (error) {
-      console.error("Error querying MongoDB:", error.message);
-    }
   });
   socket.on("getAllVideoExercises", async () => {
-    try {
       const allExercises = await Exercise.find();
       io.emit("totalUsers", allExercises.length);
-    } catch (error) {
-      console.error("Error querying MongoDB:", error.message);
-    }
   });
   socket.on("getAllExercisesTime", async () => {
-    try {
-      const allTime = await DoneExecises.aggregate([
+      const allTime = await Diary.aggregate([
         { $unwind: "$doneExercises" },
         { $group: { _id: null, totalTime: { $sum: "doneExercises.time" } } },
       ]);
 
       const totalTime = allTime.length > 0 ? result[0].totalTime : 0;
       io.emit("totalExercisesTime", totalTime);
-    } catch (error) {
-      console.error("Error querying MongoDB:", error.message);
-    }
   });
   socket.on("getAllDoneExercises", async () => {
-    try {
-      const allDoneExercises = await DoneExecises.find();
+      const allDoneExercises = await Diary.find();
 
       io.emit("totalDoneExercises", allDoneExercises.length);
-    } catch (error) {
-      console.error("Error querying MongoDB:", error.message);
-    }
   });
 });
 
