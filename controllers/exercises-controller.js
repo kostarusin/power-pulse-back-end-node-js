@@ -7,11 +7,12 @@ const getAllExercises = async (req, res) => {
 
   res.status(200).json(exercises);
 };
+
 const getAllExercisesTypes = async (req, res) => {
-    const bodyPart = await Filters.find({ filter: 'Body part' });
-    const equipment = await Filters.find({ filter: 'Equipment' });
-    const muscles = await Filters.find({ filter: 'Muscles'  });
-    res.status(200).json({ bodyPart, equipment, muscles});
+  const bodyPart = await Filters.find({ filter: "Body part" });
+  const equipment = await Filters.find({ filter: "Equipment" });
+  const muscles = await Filters.find({ filter: "Muscles" });
+  res.status(200).json({ bodyPart, equipment, muscles });
 };
 
 export default {

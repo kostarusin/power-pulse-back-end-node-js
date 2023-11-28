@@ -360,6 +360,42 @@
       }
     }
     ,
+    "/exercises": {
+      "get": {
+        "summary": "Returns all existing workouts in the database",
+        "tags": ["Exercises Controllers"],
+
+        "security": [{ "Bearer": [] }],
+
+        "description": "Returns all existing workouts in the database",
+
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Exercises"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Not authorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
+    ,
     "/products": {
       "get": {
         "summary": "Returns all existing product categories in the database",
@@ -438,42 +474,6 @@
       }
     }
     ,
-    "/exercises": {
-      "get": {
-        "summary": "Returns all existing workouts in the database",
-        "tags": ["Exercises Controllers"],
-
-        "security": [{ "Bearer": [] }],
-
-        "description": "Returns all existing workouts in the database",
-
-        "responses": {
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Exercises"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)"
-          },
-          "401": {
-            "description": "Not authorized"
-          },
-          "404": {
-            "description": "Not found"
-          },
-          "500": {
-            "description": "Server Error"
-          }
-        }
-      }
-    }
-    ,
     "/exercises/type": {
       "get": {
         "summary": "Returns all types of body parts, muscles, and equipment existing in the database",
@@ -507,6 +507,7 @@
         }
       }
     }
+
   },
   "components": {
     "schemas": {
